@@ -1,0 +1,40 @@
+{
+  "$ref": "#/definitions/videos",
+  "definitions": {
+    "videos": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "youtubeUrl": {
+          "type": "string"
+        },
+        "youtubeId": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "views": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "youtubeUrl"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

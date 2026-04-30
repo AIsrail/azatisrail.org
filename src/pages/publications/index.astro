@@ -1,0 +1,48 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const pubs = await getCollection('publications');
+const typeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент' };
+---
+<Base title="Публикации">
+<style>
+  .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); line-height: 1.75; }
+  .pub-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--border); margin-top: 2.5rem; }
+  .pub-card { padding: 2rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
+  .pub-card:nth-child(3n) { border-right: none; }
+  .pub-card:hover { background: var(--bg-card); }
+  .pub-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .pub-icon { font-size: 2.5rem; line-height: 1; }
+  .pub-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.3; flex: 1; }
+  .pub-desc { font-size: 0.86rem; color: var(--ink-muted); line-height: 1.7; }
+  .pub-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .pub-free { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .pub-cta { font-size: 0.78rem; color: var(--accent); }
+  @media(max-width:768px){ .pub-grid { grid-template-columns: 1fr; } .pub-card { border-right: none; } }
+</style>
+<div class="wrap">
+  <div class="page-header">
+    <p class="page-tag">Материалы</p>
+    <h1 class="page-title">Руководства и <em>публикации</em></h1>
+    <p class="page-desc">Бесплатные и платные материалы по фандрайзингу, управлению проектами и развитию организаций.</p>
+  </div>
+  <div class="pub-grid">
+    {pubs.map(pub => (
+      <a href={pub.data.link ?? `/publications/${pub.slug}`} class="pub-card" target={pub.data.link ? '_blank' : undefined}>
+        <span class="pub-type">{typeLabels[pub.data.type] ?? pub.data.type}</span>
+        {pub.data.icon && <div class="pub-icon">{pub.data.icon}</div>}
+        <div class="pub-title">{pub.data.title}</div>
+        <p class="pub-desc">{pub.data.description}</p>
+        <div class="pub-foot">
+          <span class="pub-free">{pub.data.isFree ? 'Бесплатно' : 'Платно'}</span>
+          <span class="pub-cta">{pub.data.cta ?? 'Открыть →'}</span>
+        </div>
+      </a>
+    ))}
+    {pubs.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Публикации появятся в ближайшее время.</p>}
+  </div>
+</div>
+</Base>

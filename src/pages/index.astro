@@ -1,0 +1,290 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()).slice(0,3);
+const publications = (await getCollection('publications')).slice(0,3);
+const funding = (await getCollection('funding')).slice(0,3);
+const videos = (await getCollection('videos')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()).slice(0,3);
+const courses = (await getCollection('courses')).slice(0,3);
+
+const tagLabels: Record<string,string> = {
+  fundraising: 'Фандрайзинг', ngo: 'НКО', business: 'Бизнес',
+  acceleration: 'Акселерация', management: 'Управление', other: 'Разное'
+};
+const categoryLabels: Record<string,string> = { grants: 'Гранты', investors: 'Инвестиции', banks: 'Банки' };
+---
+<Base title="Фандрайзинг. Бизнес. Инструменты для роста.">
+<style>
+  .hero { padding: 3.5rem 3rem 3rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 2rem; max-width: 1120px; margin: 0 auto; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); max-width: 480px; line-height: 1.75; }
+  .hero-actions { display: flex; gap: 1rem; flex-shrink: 0; }
+
+  /* ARTICLE CARDS */
+  .art-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
+  .art-card:last-child { border-right: none; }
+  .art-card:hover { background: var(--bg-card); }
+  .art-tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .art-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.3; flex: 1; }
+  .art-excerpt { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.65; }
+  .art-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .art-date { font-size: 0.75rem; color: var(--ink-muted); }
+  .art-arrow { font-size: 0.9rem; color: var(--accent-light); transition: transform 0.2s; }
+  .art-card:hover .art-arrow { transform: translate(3px,-3px); }
+
+  /* PUB CARDS */
+  .pub-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
+  .pub-card:last-child { border-right: none; }
+  .pub-card:hover { background: var(--bg-card); }
+  .pub-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .pub-icon { font-size: 2rem; line-height: 1; }
+  .pub-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; line-height: 1.3; flex: 1; }
+  .pub-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.6; }
+  .pub-cta { font-size: 0.78rem; color: var(--accent); margin-top: 0.5rem; }
+
+  /* FUNDING CARDS */
+  .don-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
+  .don-card:last-child { border-right: none; }
+  .don-card:hover { background: var(--bg-card); }
+  .don-cat { display: inline-flex; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 10px; align-self: flex-start; }
+  .don-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.1; }
+  .don-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.6; flex: 1; }
+  .don-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--ink-muted); margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  /* AI BLOCK */
+  .ai-block { background: #1C1814; border-radius: 2px; padding: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .ai-tag { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.75rem; }
+  .ai-title { font-family: var(--serif); font-size: 2rem; font-weight: 500; line-height: 1.2; margin-bottom: 1rem; color: var(--bg); }
+  .ai-title em { font-style: italic; color: var(--accent-light); }
+  .ai-desc { font-size: 0.9rem; color: rgba(246,241,233,0.65); line-height: 1.75; margin-bottom: 1.5rem; }
+  .ai-soon { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: rgba(246,241,233,0.5); font-size: 0.82rem; letter-spacing: 0.05em; padding: 0.75rem 1.5rem; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-light); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .ai-tiers { display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); }
+  .ai-tier { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
+  .ai-tier:last-child { border-bottom: none; }
+  .ai-tier-name { font-size: 0.85rem; color: rgba(246,241,233,0.75); }
+  .ai-tier-price { font-family: var(--serif); font-size: 1.1rem; color: var(--accent-light); }
+
+  /* VIDEO CARDS */
+  .vid-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: background 0.22s; border-right: 1px solid var(--border); overflow: hidden; }
+  .vid-card:last-child { border-right: none; }
+  .vid-card:hover { background: var(--bg-card); }
+  .vid-thumb { aspect-ratio: 16/9; background: #2A2218; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .vid-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .vid-play { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: absolute; transition: background 0.2s; }
+  .vid-card:hover .vid-play { background: var(--accent); border-color: var(--accent); }
+  .vid-play-icon { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 14px; border-color: transparent transparent transparent white; margin-left: 3px; }
+  .vid-duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.7rem; padding: 2px 6px; }
+  .vid-info { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+  .vid-meta { font-size: 0.72rem; color: var(--ink-muted); letter-spacing: 0.05em; }
+  .vid-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; line-height: 1.3; flex: 1; }
+  .vid-views { font-size: 0.75rem; color: var(--ink-muted); margin-top: auto; }
+
+  /* COURSE CARDS */
+  .course-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
+  .course-card:last-child { border-right: none; }
+  .course-card:hover { background: var(--bg-card); }
+  .course-badge { display: inline-flex; align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; color: var(--ink-muted); }
+  .course-badge.featured { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .course-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.3; flex: 1; }
+  .course-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.65; }
+  .course-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--ink-muted); padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: auto; align-items: center; }
+  .course-price { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); font-weight: 500; margin-left: auto; }
+
+  @media (max-width: 768px) {
+    .hero { flex-direction: column; padding: 2rem 1.25rem; }
+    .ai-block { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- HERO -->
+<div style="border-bottom:1px solid var(--border);">
+  <div class="hero">
+    <div>
+      <h1>Фандрайзинг. Бизнес.<br><em>Инструменты для роста.</em></h1>
+      <p>Практические материалы, инструменты и курсы — для НКО, предпринимателей и консультантов Центральной Азии.</p>
+    </div>
+    <div class="hero-actions">
+      <a href="#ai" class="btn">ИИ-поиск финансирования</a>
+      <a href="/about" class="btn btn-ghost">Обо мне →</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ① ПОСТЫ -->
+  <div class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Свежее</span>
+        <h2 class="block-title">Статьи и <em>посты</em></h2>
+      </div>
+      <a href="/posts" class="all-link">Все посты →</a>
+    </div>
+    <div class="grid3">
+      {posts.map(post => (
+        <a href={`/posts/${post.slug}`} class="art-card">
+          <span class="art-tag">{tagLabels[post.data.tag] ?? post.data.tag}</span>
+          <div class="art-title">{post.data.title}</div>
+          <p class="art-excerpt">{post.data.excerpt}</p>
+          <div class="art-foot">
+            <span class="art-date">{new Date(post.data.date).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'})}</span>
+            <span class="art-arrow">↗</span>
+          </div>
+        </a>
+      ))}
+      {posts.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся посты.</p>}
+    </div>
+  </div>
+
+  <!-- ② ПУБЛИКАЦИИ -->
+  <div class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Материалы</span>
+        <h2 class="block-title">Руководства и <em>публикации</em></h2>
+      </div>
+      <a href="/publications" class="all-link">Все публикации →</a>
+    </div>
+    <div class="grid3">
+      {publications.map(pub => (
+        <a href={pub.data.link ?? `/publications/${pub.slug}`} class="pub-card" target={pub.data.link ? '_blank' : undefined}>
+          <span class="pub-type">{pub.data.type}</span>
+          <div class="pub-icon">{pub.data.icon}</div>
+          <div class="pub-title">{pub.data.title}</div>
+          <p class="pub-desc">{pub.data.description}</p>
+          <span class="pub-cta">{pub.data.cta}</span>
+        </a>
+      ))}
+      {publications.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся публикации.</p>}
+    </div>
+  </div>
+
+  <!-- ③ ФИНАНСИРОВАНИЕ -->
+  <div class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Каталог</span>
+        <h2 class="block-title">Источники <em>финансирования</em></h2>
+      </div>
+      <a href="/funding" class="all-link">Весь каталог →</a>
+    </div>
+    <div class="grid3">
+      {funding.map(f => (
+        <a href={f.data.link ?? `/funding`} class="don-card" target={f.data.link ? '_blank' : undefined}>
+          <span class="don-cat">{categoryLabels[f.data.category] ?? f.data.category}</span>
+          <div class="don-name">{f.data.name}</div>
+          <p class="don-desc">{f.data.description}</p>
+          <div class="don-meta">
+            <span>{f.data.count}</span>
+            {f.data.geography && <span>{f.data.geography}</span>}
+          </div>
+        </a>
+      ))}
+      {funding.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Каталог в разработке.</p>}
+    </div>
+  </div>
+
+</div>
+
+<!-- ④ ИИ-ПОМОЩНИК -->
+<div class="wrap">
+  <div class="block reveal" id="ai">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Скоро</span>
+        <h2 class="block-title">ИИ-помощник по <em>финансированию</em></h2>
+      </div>
+    </div>
+    <div class="ai-block">
+      <div>
+        <p class="ai-tag">Умный поиск источников</p>
+        <h3 class="ai-title">Найди финансирование<br><em>под свой проект</em></h3>
+        <p class="ai-desc">Опиши задачу — ИИ подберёт подходящие источники из базы доноров, инвесторов и программ. Базовый поиск бесплатно, разработка документов платно.</p>
+        <div class="ai-soon">
+          <div class="ai-dot"></div>
+          В разработке — запуск в ближайшее время
+        </div>
+      </div>
+      <div class="ai-tiers">
+        <div class="ai-tier">
+          <span class="ai-tier-name">Поиск источников — «подходит / не подходит»</span>
+          <span class="ai-tier-price">Бесплатно</span>
+        </div>
+        <div class="ai-tier">
+          <span class="ai-tier-name">Разработка концепции проекта</span>
+          <span class="ai-tier-price">Платно</span>
+        </div>
+        <div class="ai-tier">
+          <span class="ai-tier-name">Подготовка основного документа</span>
+          <span class="ai-tier-price">Платно</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ⑤ ВИДЕО -->
+  <div class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">YouTube</span>
+        <h2 class="block-title">Видео и <em>разборы</em></h2>
+      </div>
+      <a href="https://www.youtube.com/@connect4fund" class="all-link" target="_blank">На YouTube →</a>
+    </div>
+    <div class="grid3">
+      {videos.map(v => (
+        <a href={v.data.youtubeUrl} class="vid-card" target="_blank">
+          <div class="vid-thumb">
+            {v.data.youtubeId
+              ? <img src={`https://img.youtube.com/vi/${v.data.youtubeId}/mqdefault.jpg`} alt={v.data.title} loading="lazy" />
+              : null}
+            <div class="vid-play"><div class="vid-play-icon"></div></div>
+            {v.data.duration && <span class="vid-duration">{v.data.duration}</span>}
+          </div>
+          <div class="vid-info">
+            <span class="vid-meta">{v.data.date ? new Date(v.data.date).toLocaleDateString('ru-RU',{month:'long',year:'numeric'}) : ''}</span>
+            <div class="vid-title">{v.data.title}</div>
+            {v.data.views && <span class="vid-views">{v.data.views} просмотров</span>}
+          </div>
+        </a>
+      ))}
+      {videos.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся видео.</p>}
+    </div>
+  </div>
+
+  <!-- ⑥ КУРСЫ -->
+  <div class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Обучение</span>
+        <h2 class="block-title">Курсы и <em>тренинги</em></h2>
+      </div>
+      <a href="/courses" class="all-link">Все курсы →</a>
+    </div>
+    <div class="grid3">
+      {courses.map(c => (
+        <a href={c.data.link ?? `/courses/${c.slug}`} class="course-card" target={c.data.link ? '_blank' : undefined}>
+          <span class={`course-badge ${c.data.isFeatured ? 'featured' : ''}`}>{c.data.badge}</span>
+          <div class="course-title">{c.data.title}</div>
+          <p class="course-desc">{c.data.description}</p>
+          <div class="course-meta">
+            {c.data.duration && <span>{c.data.duration}</span>}
+            {c.data.format && <span>{c.data.format}</span>}
+            {c.data.price && <span class="course-price">{c.data.price}</span>}
+          </div>
+        </a>
+      ))}
+      {courses.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся курсы.</p>}
+    </div>
+  </div>
+
+</div>
+</Base>

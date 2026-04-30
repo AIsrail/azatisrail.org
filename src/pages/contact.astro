@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Связаться">
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid var(--border); min-height: calc(100vh - 120px); }
+  .cl { padding: 4rem 3rem 4rem 0; border-right: 1px solid var(--border); }
+  .cr { padding: 4rem 0 4rem 3rem; }
+  .ctitle { font-family: var(--serif); font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 500; line-height: 1.15; margin-bottom: 1.25rem; }
+  .ctitle em { font-style: italic; color: var(--accent); }
+  .cdesc { font-size: 0.95rem; color: var(--ink-muted); line-height: 1.8; margin-bottom: 2.5rem; }
+  .clinks { display: flex; flex-direction: column; gap: 0.85rem; }
+  .clink { display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; color: var(--ink); text-decoration: none; transition: color 0.2s; }
+  .clink:hover { color: var(--accent); }
+  .clbl { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); min-width: 56px; }
+  form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .fg { display: flex; flex-direction: column; gap: 0.4rem; }
+  .flbl { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+  .fc { background: var(--bg); border: 1px solid var(--border); padding: 0.75rem 1rem; font-family: var(--sans); font-size: 0.9rem; font-weight: 300; color: var(--ink); outline: none; transition: border-color 0.2s; width: 100%; appearance: none; -webkit-appearance: none; }
+  .fc:focus { border-color: var(--accent); }
+  textarea.fc { resize: vertical; min-height: 110px; }
+  .fsub { background: var(--ink); color: var(--bg); border: none; padding: 1rem 2rem; font-family: var(--sans); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: background 0.22s; align-self: flex-start; }
+  .fsub:hover { background: var(--accent); }
+  @media(max-width:768px){ .contact-grid { grid-template-columns: 1fr; } .cl { border-right: none; padding: 2rem 0; } .cr { padding: 2rem 0; } .frow { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap" style="padding-top:1px">
+  <div class="contact-grid">
+    <div class="cl">
+      <p class="page-tag" style="margin-bottom:0.75rem">Связаться</p>
+      <h1 class="ctitle">Начнём с <em>разговора</em></h1>
+      <p class="cdesc">Расскажите о задаче — и мы найдём подходящий формат работы. Можно прийти без готового ТЗ.</p>
+      <div class="clinks">
+        <a href="tel:+996702271827" class="clink"><span class="clbl">Тел.</span>+996 702 27 18 27</a>
+        <a href="https://wa.me/996702271827" class="clink"><span class="clbl">WhatsApp</span>+996 702 27 18 27</a>
+        <a href="mailto:azat@azatisrail.org" class="clink"><span class="clbl">Email</span>azat@azatisrail.org</a>
+        <a href="https://linkedin.com/in/azat-israilov-6b515228/" class="clink" target="_blank"><span class="clbl">LinkedIn</span>azat-israilov</a>
+        <a href="https://www.youtube.com/@connect4fund" class="clink" target="_blank"><span class="clbl">YouTube</span>@connect4fund</a>
+        <div class="clink" style="cursor:default"><span class="clbl">Локация</span>Бишкек · Работаю онлайн</div>
+      </div>
+    </div>
+    <div class="cr">
+      <form action="mailto:azat@azatisrail.org" method="post" enctype="text/plain">
+        <div class="frow">
+          <div class="fg"><label class="flbl">Имя</label><input class="fc" type="text" name="name" placeholder="Ваше имя" /></div>
+          <div class="fg"><label class="flbl">Организация</label><input class="fc" type="text" name="org" placeholder="Компания / НКО" /></div>
+        </div>
+        <div class="fg"><label class="flbl">Email</label><input class="fc" type="email" name="email" placeholder="email@example.com" /></div>
+        <div class="fg">
+          <label class="flbl">Вы — это...</label>
+          <select class="fc" name="type">
+            <option value="">Выберите тип</option>
+            <option>Предприниматель / МСБ</option>
+            <option>Представитель НКО</option>
+            <option>Консультант / Эксперт</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="fg"><label class="flbl">Запрос</label><textarea class="fc" name="message" placeholder="Опишите задачу или вопрос..."></textarea></div>
+        <button type="submit" class="fsub">Отправить сообщение →</button>
+      </form>
+    </div>
+  </div>
+</div>
+</Base>

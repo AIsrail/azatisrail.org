@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const all = await getCollection('funding');
+const grants = all.filter(f => f.data.category === 'grants');
+const investors = all.filter(f => f.data.category === 'investors');
+const banks = all.filter(f => f.data.category === 'banks');
+---
+<Base title="Источники финансирования">
+<style>
+  .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); max-width: 560px; line-height: 1.75; }
+  .cat-block { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .cat-block:last-child { border-bottom: none; }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; }
+  .cat-label { display: inline-block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 12px; margin-bottom: 0.5rem; }
+  .cat-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; }
+  .funding-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--border); }
+  .f-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
+  .f-card:last-child { border-right: none; }
+  .f-card:hover { background: var(--bg-card); }
+  .f-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.2; }
+  .f-desc { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.65; flex: 1; }
+  .f-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--ink-muted); padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: auto; flex-wrap: wrap; }
+  @media(max-width:768px){ .funding-grid { grid-template-columns: 1fr; } .f-card { border-right: none; } }
+</style>
+<div class="wrap">
+  <div class="page-header">
+    <p class="page-tag">Каталог</p>
+    <h1 class="page-title">Источники <em>финансирования</em></h1>
+    <p class="page-desc">Доноры, инвестиционные фонды и кредитные программы для НКО, предпринимателей и организаций Центральной Азии.</p>
+  </div>
+
+  {[
+    { items: grants, label: 'Гранты', title: 'Доноры и фонды' },
+    { items: investors, label: 'Инвестиции', title: 'Инвест-фонды и венчур' },
+    { items: banks, label: 'Банки', title: 'Банки и МФО' },
+  ].map(({ items, label, title }) => (
+    <div class="cat-block">
+      <div class="cat-head">
+        <div>
+          <span class="cat-label">{label}</span>
+          <div class="cat-title">{title}</div>
+        </div>
+      </div>
+      {items.length > 0 ? (
+        <div class="funding-grid">
+          {items.map(f => (
+            <a href={f.data.link ?? '#'} class="f-card" target={f.data.link ? '_blank' : undefined}>
+              <div class="f-name">{f.data.name}</div>
+              <p class="f-desc">{f.data.description}</p>
+              <div class="f-meta">
+                {f.data.count && <span>{f.data.count}</span>}
+                {f.data.geography && <span>{f.data.geography}</span>}
+                {f.data.updatedAt && <span>Обновлено: {f.data.updatedAt}</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p style="color:var(--ink-muted);font-size:0.9rem">Скоро появятся записи.</p>
+      )}
+    </div>
+  ))}
+</div>
+</Base>

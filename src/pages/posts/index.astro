@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('posts')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг', ngo:'НКО', business:'Бизнес', acceleration:'Акселерация', management:'Управление', other:'Разное' };
+---
+<Base title="Посты и статьи">
+<style>
+  .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); line-height: 1.75; }
+  .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .chip { padding: 5px 14px; border: 1px solid var(--border); background: none; font-family: var(--sans); font-size: 0.78rem; color: var(--ink-muted); cursor: pointer; border-radius: 100px; transition: all 0.18s; }
+  .chip:hover { border-color: var(--accent-light); color: var(--accent); }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .posts-list { display: flex; flex-direction: column; }
+  .post-row { display: grid; grid-template-columns: 8rem 1fr auto; gap: 2rem; padding: 1.75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; align-items: start; transition: background 0.2s; }
+  .post-row:hover { background: var(--bg-card); padding-left: 1rem; padding-right: 1rem; margin: 0 -1rem; }
+  .post-tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); padding-top: 4px; }
+  .post-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; line-height: 1.3; margin-bottom: 0.3rem; }
+  .post-excerpt { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.6; }
+  .post-date { font-size: 0.75rem; color: var(--ink-muted); white-space: nowrap; padding-top: 4px; }
+  .post-row.hidden { display: none; }
+  @media(max-width:768px){ .post-row { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+  <div class="page-header">
+    <p class="page-tag">Свежее</p>
+    <h1 class="page-title">Статьи и <em>посты</em></h1>
+    <p class="page-desc">Практические материалы по фандрайзингу, управлению проектами и развитию бизнеса.</p>
+  </div>
+  <div class="filters">
+    <button class="chip on" data-val="all">Все</button>
+    <button class="chip" data-val="fundraising">Фандрайзинг</button>
+    <button class="chip" data-val="ngo">НКО</button>
+    <button class="chip" data-val="business">Бизнес</button>
+    <button class="chip" data-val="management">Управление</button>
+    <button class="chip" data-val="acceleration">Акселерация</button>
+  </div>
+  <div class="posts-list">
+    {posts.map(post => (
+      <a href={`/posts/${post.slug}`} class="post-row" data-tag={post.data.tag}>
+        <span class="post-tag">{tagLabels[post.data.tag] ?? post.data.tag}</span>
+        <div>
+          <div class="post-title">{post.data.title}</div>
+          <p class="post-excerpt">{post.data.excerpt}</p>
+        </div>
+        <span class="post-date">{new Date(post.data.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
+      </a>
+    ))}
+    {posts.length === 0 && <p style="padding:3rem 0;color:var(--ink-muted)">Посты появятся в ближайшее время.</p>}
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+      this.classList.add('on');
+      const val = this.dataset.val;
+      document.querySelectorAll('.post-row').forEach(row => {
+        row.classList.toggle('hidden', val !== 'all' && row.dataset.tag !== val);
+      });
+    });
+  });
+</script>
+</Base>
