@@ -3,7 +3,8 @@ import { config, collection, fields } from '@keystatic/core';
 export default config({
   storage: {
     // Switch to { kind: 'github', repo: 'YOUR_USERNAME/azatisrail' } for production
-    kind: 'local',
+    kind: 'github',
+    repo: 'AIsrail/azatisrail.org'
   },
 
   ui: {
