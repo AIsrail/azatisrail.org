@@ -10,7 +10,7 @@ import react from '@astrojs/react';
 // For local development, Keystatic works out of the box in "local" mode.
 
 export default defineConfig({
-  output: 'hybrid',
+  output: 'static',
   integrations: [mdx(), keystatic(), react()],
   // Cloudflare Pages adapter — uncomment when deploying:
   // adapter: cloudflare(),
