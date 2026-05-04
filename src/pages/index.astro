@@ -7,6 +7,7 @@ const publications = (await getCollection('publications')).slice(0,3);
 const funding = (await getCollection('funding')).slice(0,3);
 const videos = (await getCollection('videos')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()).slice(0,3);
 const courses = (await getCollection('courses')).slice(0,3);
+const trainings = (await getCollection('trainings')).slice(0,3);
 
 const tagLabels: Record<string,string> = {
   fundraising: 'Фандрайзинг', ngo: 'НКО', business: 'Бизнес',
@@ -270,19 +271,18 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
       <a href="/courses" class="all-link">Все курсы →</a>
     </div>
     <div class="grid3">
-      {courses.map(c => (
-        <a href={c.data.link ?? `/courses/${c.slug}`} class="course-card" target={c.data.link ? '_blank' : undefined}>
-          <span class={`course-badge ${c.data.isFeatured ? 'featured' : ''}`}>{c.data.badge}</span>
-          <div class="course-title">{c.data.title}</div>
-          <p class="course-desc">{c.data.description}</p>
+      {trainings.map(t => (
+        <a href={`/trainings`} class="course-card">
+          <span class="course-badge">{t.data.topics?.join(', ')}</span>
+          <div class="course-title">{t.data.title}</div>
+          <p class="course-desc">{t.data.description}</p>
           <div class="course-meta">
-            {c.data.duration && <span>{c.data.duration}</span>}
-            {c.data.format && <span>{c.data.format}</span>}
-            {c.data.price && <span class="course-price">{c.data.price}</span>}
+            {t.data.duration && <span>{t.data.duration}</span>}
+            {t.data.format && <span>{t.data.format === 'both' ? 'Онлайн · Офлайн' : t.data.format}</span>}
           </div>
         </a>
       ))}
-      {courses.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся курсы.</p>}
+      {trainings.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся тренинги.</p>}
     </div>
   </div>
 
