@@ -308,7 +308,7 @@ async function loadTab(tab) {
     try {
       const r = await ghGet(path);
       if (r.type === 'file') {
-        const content = atob(r.content.replace(/\n/g,''));
+        const content = decodeURIComponent(escape(atob(r.content.replace(/\n/g,''))));
         let parsed = parseContent(tab, path, content);
         parsed._path = path;
         parsed._sha = r.sha;
