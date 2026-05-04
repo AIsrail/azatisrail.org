@@ -6,6 +6,12 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'hybrid',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    routes: {
+      extend: {
+        include: [{ pattern: '/keystatic/*' }]
+      }
+    }
+  }),
   integrations: [mdx(), keystatic(), react()],
 });
