@@ -19,5 +19,12 @@ export default defineConfig({
       }
     }
   }),
-  integrations: [mdx(), keystatic(), react(), sitemap()],
+  integrations: [
+    mdx(),
+    keystatic(),
+    react(),
+    sitemap({
+      filter: (page) => !page.includes('/keystatic') && !page.includes('/api/'),
+    }),
+  ],
 });
