@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Поддержать проект">
+<style>
+  .support-wrap { max-width: 680px; margin: 0 auto; padding: 4rem 3rem 6rem; }
+  .page-tag { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; line-height: 1.1; margin-bottom: 2rem; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { font-size: 1rem; color: var(--ink); line-height: 1.85; margin-bottom: 0.75rem; }
+  .page-desc a { color: var(--accent); text-decoration: underline; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .methods-title { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.5rem; }
+  .method-block { border: 1px solid var(--border); margin-bottom: 1px; }
+  .method-head { padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); }
+  .method-name { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+  .method-badge { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: rgba(139,94,60,0.1); padding: 3px 10px; }
+  .method-body { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); }
+  .method-value { font-family: monospace; font-size: 0.95rem; color: var(--ink); background: var(--bg); border: 1px solid var(--border); padding: 0.6rem 1rem; display: block; word-break: break-all; cursor: pointer; transition: border-color 0.2s; }
+  .method-value:hover { border-color: var(--accent); }
+  .method-hint { font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.5rem; }
+  .thanks { margin-top: 3rem; padding: 2rem; border: 1px solid var(--border); background: var(--bg-card); }
+  .thanks-text { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
+  .thanks-name { font-size: 0.9rem; color: var(--ink-muted); }
+  .copied-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 20px; font-size: 13px; opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 999; }
+  .copied-toast.show { opacity: 1; }
+</style>
+
+<div class="support-wrap">
+  <span class="page-tag">Поддержка</span>
+  <h1 class="page-title">Поддержать <em>проект</em></h1>
+
+  <p class="page-desc">
+    Этот сайт — часть большой работы по распространению знаний о фандрайзинге, грантах и развитии бизнеса в Центральной Азии.
+  </p>
+  <p class="page-desc">
+    Ваша поддержка помогает развивать <strong>connect4pro</strong> — ресурс, где мы делимся актуальной информацией о грантах и инвестициях для организаций, компаний, предпринимателей и активистов Центральной Азии.
+  </p>
+
+  <hr class="divider" />
+
+  <p class="methods-title">Способы поддержки</p>
+
+  <div class="method-block">
+    <div class="method-head">
+      <span class="method-name">Мбанк / О!Деньги</span>
+      <span class="method-badge">Сомы</span>
+    </div>
+    <div class="method-body">
+      <span class="method-value" onclick="copyText('0702271827', this)">0702 27 18 27</span>
+      <p class="method-hint">Нажмите чтобы скопировать номер</p>
+    </div>
+  </div>
+
+  <div class="method-block">
+    <div class="method-head">
+      <span class="method-name">Visa</span>
+      <span class="method-badge">Доллары</span>
+    </div>
+    <div class="method-body">
+      <span class="method-value" onclick="copyText('4177490159494154', this)">4177 4901 5949 4154</span>
+      <p class="method-hint">Нажмите чтобы скопировать номер карты</p>
+    </div>
+  </div>
+
+  <div class="method-block">
+    <div class="method-head">
+      <span class="method-name">Bitcoin</span>
+      <span class="method-badge">ERC20</span>
+    </div>
+    <div class="method-body">
+      <span class="method-value" onclick="copyText('0xfffafbaf96f62e8cc0e5c9fc901b095f98b2221c', this)">0xfffafbaf96f62e8cc0e5c9fc901b095f98b2221c</span>
+      <p class="method-hint">Нажмите чтобы скопировать адрес</p>
+    </div>
+  </div>
+
+  <div class="method-block">
+    <div class="method-head">
+      <span class="method-name">Ethereum</span>
+      <span class="method-badge">ERC20</span>
+    </div>
+    <div class="method-body">
+      <span class="method-value" onclick="copyText('0xfffafbaf96f62e8cc0e5c9fc901b095f98b2221c', this)">0xfffafbaf96f62e8cc0e5c9fc901b095f98b2221c</span>
+      <p class="method-hint">Нажмите чтобы скопировать адрес</p>
+    </div>
+  </div>
+
+  <div class="thanks">
+    <div class="thanks-text">Спасибо за поддержку!</div>
+    <div class="thanks-name">Азат Исраилов</div>
+  </div>
+</div>
+
+<div class="copied-toast" id="toast">Скопировано!</div>
+
+<script>
+function copyText(text, el) {
+  navigator.clipboard.writeText(text);
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+</script>
+</Base>
