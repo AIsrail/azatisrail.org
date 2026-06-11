@@ -1,0 +1,465 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Как привлечь денежный грант — Руководство Азата Исраилова" description="2-е переработанное издание руководства по фандрайзингу. Методология «3 Дерева»®, гранты для бизнеса и НКО, работа с ИИ, 40+ источников финансирования. Предзаказ — 1 500 сом.">
+<style>
+  /* HERO */
+  .book-hero {
+    display: grid; grid-template-columns: 1fr 420px;
+    gap: 0; border-bottom: 1px solid var(--border);
+    min-height: 80vh; align-items: stretch;
+  }
+  .book-hero-left {
+    padding: 5rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+  .book-edition {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;
+  }
+  .book-edition::before { content: ''; width: 2rem; height: 1px; background: var(--accent); }
+  .book-title {
+    font-family: var(--serif); font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    font-weight: 500; line-height: 1.05; letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .book-title em { font-style: italic; color: var(--accent); }
+  .book-subtitle {
+    font-size: 1rem; color: var(--ink-muted); line-height: 1.8;
+    max-width: 500px; margin-bottom: 2.5rem;
+  }
+  .book-ctas { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .btn-preorder {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent); color: var(--bg); border: none;
+    padding: 1rem 2rem; font-family: var(--sans); font-size: 0.88rem;
+    font-weight: 500; letter-spacing: 0.04em; text-decoration: none;
+    transition: opacity 0.2s; cursor: pointer;
+  }
+  .btn-preorder:hover { opacity: 0.87; }
+  .btn-checklist {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--ink-muted); font-size: 0.85rem; text-decoration: none;
+    border-bottom: 1px solid var(--border); padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-checklist:hover { color: var(--accent); border-color: var(--accent); }
+  .book-stats {
+    display: flex; gap: 2.5rem; margin-top: 3rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border);
+  }
+  .bstat { }
+  .bstat-n {
+    font-family: var(--serif); font-size: 2rem; font-weight: 500;
+    color: var(--ink); line-height: 1; display: block;
+  }
+  .bstat-l {
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-muted); display: block; margin-top: 0.25rem;
+  }
+
+  /* PRICE PANEL */
+  .book-hero-right {
+    background: var(--bg-card);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 3rem;
+  }
+  .price-label {
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 1.5rem;
+  }
+  .price-block {
+    border: 1px solid var(--border); margin-bottom: 1px;
+  }
+  .price-row {
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row.featured { background: var(--accent); }
+  .price-name { font-size: 0.88rem; color: var(--ink); }
+  .price-row.featured .price-name { color: var(--bg); }
+  .price-val {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 500; color: var(--ink);
+  }
+  .price-row.featured .price-val { color: var(--bg); }
+  .price-badge {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(255,255,255,0.2); color: var(--bg);
+    padding: 2px 8px; margin-left: 0.5rem;
+  }
+  .price-cta {
+    display: block; width: 100%;
+    background: var(--ink); color: var(--bg); border: none;
+    padding: 1rem; font-family: var(--sans); font-size: 0.85rem;
+    font-weight: 500; letter-spacing: 0.05em; text-align: center;
+    text-decoration: none; cursor: pointer; transition: background 0.2s;
+    margin-top: 1.5rem;
+  }
+  .price-cta:hover { background: var(--accent); }
+  .price-bonus {
+    margin-top: 1.5rem; padding: 1.25rem;
+    border: 1px solid var(--border); background: var(--bg);
+  }
+  .price-bonus-title {
+    font-size: 0.78rem; font-weight: 500; color: var(--ink);
+    margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .price-bonus-desc { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.6; }
+  .price-tilda {
+    margin-top: 1rem; font-size: 0.75rem; color: var(--ink-muted);
+    text-align: center; line-height: 1.5;
+  }
+  .price-tilda a { color: var(--accent); }
+
+  /* SECTIONS */
+  .section { padding: 5rem 4rem; border-bottom: 1px solid var(--border); max-width: 1120px; margin: 0 auto; }
+  .section-tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+  .section-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; line-height: 1.1; margin-bottom: 2.5rem; }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* CONTENTS GRID */
+  .contents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--border); }
+  .content-item {
+    padding: 1.75rem; border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); display: flex; gap: 1rem;
+  }
+  .content-item:nth-child(2n) { border-right: none; }
+  .content-item:nth-last-child(-n+2) { border-bottom: none; }
+  .content-num {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 500;
+    color: var(--accent-light); line-height: 1; flex-shrink: 0; padding-top: 2px;
+  }
+  .content-text { }
+  .content-name { font-size: 0.92rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; }
+  .content-desc { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.65; }
+
+  /* AUDIENCE */
+  .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); }
+  .audience-card { padding: 2rem; border-right: 1px solid var(--border); }
+  .audience-card:last-child { border-right: none; }
+  .audience-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .audience-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; margin-bottom: 0.6rem; }
+  .audience-desc { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.7; }
+
+  /* SECTIONS LIST */
+  .sections-list { display: flex; flex-direction: column; border: 1px solid var(--border); }
+  .section-row {
+    display: grid; grid-template-columns: 3rem 1fr;
+    gap: 1.5rem; padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border); align-items: start;
+  }
+  .section-row:last-child { border-bottom: none; }
+  .section-row-num {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 500;
+    color: var(--accent-light); line-height: 1;
+  }
+  .section-row-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 0.25rem; }
+  .section-row-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.65; }
+
+  /* AUTHOR */
+  .author-block {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border: 1px solid var(--border);
+  }
+  .author-left { padding: 3rem; border-right: 1px solid var(--border); }
+  .author-right { padding: 3rem; background: var(--bg-card); }
+  .author-name { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; line-height: 1.1; margin-bottom: 0.5rem; }
+  .author-role { font-size: 0.82rem; color: var(--ink-muted); letter-spacing: 0.04em; margin-bottom: 1.5rem; }
+  .author-bio { font-size: 0.9rem; color: var(--ink); line-height: 1.85; }
+  .author-copyright { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.65; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .bonuses-list { display: flex; flex-direction: column; gap: 1rem; }
+  .bonus-item { display: flex; gap: 1rem; align-items: start; }
+  .bonus-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 6px; }
+  .bonus-text { font-size: 0.88rem; color: var(--ink); line-height: 1.65; }
+  .bonus-text strong { font-weight: 500; }
+
+  /* FINAL CTA */
+  .final-cta {
+    background: var(--ink); padding: 5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 3rem;
+    max-width: 100%;
+  }
+  .final-cta-left { }
+  .final-cta-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 500; color: var(--bg); line-height: 1.15; margin-bottom: 0.75rem; }
+  .final-cta-title em { font-style: italic; color: var(--accent-light); }
+  .final-cta-sub { font-size: 0.9rem; color: rgba(246,241,233,0.5); }
+  .final-cta-right { display: flex; flex-direction: column; gap: 0.75rem; flex-shrink: 0; }
+  .btn-preorder-dark {
+    display: inline-block; background: var(--accent); color: var(--bg);
+    padding: 1rem 2rem; font-family: var(--sans); font-size: 0.88rem;
+    font-weight: 500; letter-spacing: 0.04em; text-decoration: none;
+    text-align: center; transition: opacity 0.2s;
+  }
+  .btn-preorder-dark:hover { opacity: 0.87; }
+  .btn-checklist-dark {
+    display: inline-block; color: rgba(246,241,233,0.5); font-size: 0.82rem;
+    text-decoration: none; text-align: center; border-bottom: 1px solid rgba(246,241,233,0.15);
+    padding-bottom: 1px; transition: color 0.2s;
+  }
+  .btn-checklist-dark:hover { color: rgba(246,241,233,0.85); }
+
+  @media (max-width: 900px) {
+    .book-hero { grid-template-columns: 1fr; }
+    .book-hero-left { padding: 3rem 1.5rem; border-right: none; }
+    .book-hero-right { padding: 2rem 1.5rem; }
+    .section { padding: 3rem 1.5rem; }
+    .contents-grid { grid-template-columns: 1fr; }
+    .content-item { border-right: none; }
+    .content-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .content-item:last-child { border-bottom: none; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .audience-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .audience-card:last-child { border-bottom: none; }
+    .author-block { grid-template-columns: 1fr; }
+    .author-left { border-right: none; }
+    .final-cta { flex-direction: column; padding: 3rem 1.5rem; }
+  }
+</style>
+
+<!-- HERO -->
+<div style="border-bottom:1px solid var(--border);">
+  <div class="book-hero">
+    <div class="book-hero-left">
+      <span class="book-edition">2-е издание · 2026</span>
+      <h1 class="book-title">
+        Как привлечь<br>денежный грант<br>в <em>бизнес или проект</em>
+      </h1>
+      <p class="book-subtitle">
+        Практическое руководство по фандрайзингу с авторской методологией «3 Дерева»®. Более 250 страниц — для предпринимателей, НКО и консультантов Центральной Азии.
+      </p>
+      <div class="book-ctas">
+        <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="btn-preorder" target="_blank">
+          Оформить предзаказ →
+        </a>
+        <a href="https://t.me/connect4faq/137" class="btn-checklist" target="_blank">
+          Бесплатный путеводитель ↗
+        </a>
+      </div>
+      <div class="book-stats">
+        <div class="bstat">
+          <span class="bstat-n">800+</span>
+          <span class="bstat-l">экз. 1-го издания</span>
+        </div>
+        <div class="bstat">
+          <span class="bstat-n">250+</span>
+          <span class="bstat-l">страниц</span>
+        </div>
+        <div class="bstat">
+          <span class="bstat-n">40+</span>
+          <span class="bstat-l">источников финансирования</span>
+        </div>
+        <div class="bstat">
+          <span class="bstat-n">4</span>
+          <span class="bstat-l">страны ЦА</span>
+        </div>
+      </div>
+    </div>
+    <div class="book-hero-right">
+      <p class="price-label">Стоимость</p>
+      <div class="price-block">
+        <div class="price-row featured">
+          <div>
+            <div class="price-name">Предзаказ до 15 июня</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="price-val">1 500 сом</span>
+            <span class="price-badge">-12%</span>
+          </div>
+        </div>
+        <div class="price-row">
+          <span class="price-name">После 15 июня</span>
+          <span class="price-val">1 700 сом</span>
+        </div>
+      </div>
+      <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="price-cta" target="_blank">
+        Оформить предзаказ →
+      </a>
+      <div class="price-bonus">
+        <div class="price-bonus-title">🎁 Бонус предзаказчикам</div>
+        <div class="price-bonus-desc">После оплаты вы получите PDF-пакет с дополнительными практическими материалами.</div>
+      </div>
+      <p class="price-tilda">
+        Также доступно на <a href="https://grantmanual.tilda.ws/" target="_blank">grantmanual.tilda.ws</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENTS -->
+<div class="section">
+  <span class="section-tag">Содержание</span>
+  <h2 class="section-title">Что внутри <em>руководства</em></h2>
+  <div class="contents-grid">
+    <div class="content-item">
+      <span class="content-num">01</span>
+      <div class="content-text">
+        <div class="content-name">Методология «3 Дерева»®</div>
+        <p class="content-desc">Запатентованная авторская система разработки проектных предложений под любой конкурс финансирования.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">02</span>
+      <div class="content-text">
+        <div class="content-name">Гранты для бизнеса, стартапов и НКО</div>
+        <p class="content-desc">Как искать, выбирать и подаваться на гранты в зависимости от типа организации.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">03</span>
+      <div class="content-text">
+        <div class="content-name">30+ вопросов и ответов</div>
+        <p class="content-desc">Ответы на самые частые вопросы по привлечению грантового финансирования.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">04</span>
+      <div class="content-text">
+        <div class="content-name">Работа с ИИ для фандрайзинга</div>
+        <p class="content-desc">Как использовать ChatGPT и другие ИИ-инструменты для написания заявок и разработки проектов.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">05</span>
+      <div class="content-text">
+        <div class="content-name">40+ источников финансирования</div>
+        <p class="content-desc">Актуальный список доноров, инвестфондов и консультантов для Кыргызстана и ЦА.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">06</span>
+      <div class="content-text">
+        <div class="content-name">Реальные примеры проектов</div>
+        <p class="content-desc">2 реальных кейса — проекты, которые получили финансирование с разбором логики и структуры.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">07</span>
+      <div class="content-text">
+        <div class="content-name">Практические чек-листы и инструменты</div>
+        <p class="content-desc">Готовые инструменты для разработки проекта, проверки заявки и подготовки бюджета.</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <span class="content-num">08</span>
+      <div class="content-text">
+        <div class="content-name">Полезные ресурсы и ссылки</div>
+        <p class="content-desc">Ссылки на сайты, группы и инструменты, которые помогут в поиске финансирования.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUDIENCE -->
+<div class="section" style="padding-top:0">
+  <span class="section-tag">Для кого</span>
+  <h2 class="section-title">Кому <em>подойдёт</em> руководство</h2>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <span class="audience-icon">🚀</span>
+      <div class="audience-name">Предпринимателям и стартапам</div>
+      <p class="audience-desc">Найдёте дополнительные источники финансирования, научитесь логике доноров и сможете разработать убедительное проектное предложение.</p>
+    </div>
+    <div class="audience-card">
+      <span class="audience-icon">🏛️</span>
+      <div class="audience-name">НКО и организациям</div>
+      <p class="audience-desc">Разберётесь в фандрайзинге с нуля, научитесь правильно формулировать проблему и цели, повысите шансы на получение гранта.</p>
+    </div>
+    <div class="audience-card">
+      <span class="audience-icon">💼</span>
+      <div class="audience-name">Консультантам и фандрайзерам</div>
+      <p class="audience-desc">Поднимете качество услуг на новый уровень, освоите практичный инструмент и начнёте эффективнее разрабатывать проекты для клиентов.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTIONS -->
+<div class="section" style="padding-top:0">
+  <span class="section-tag">Структура</span>
+  <h2 class="section-title">Основные <em>разделы</em></h2>
+  <div class="sections-list">
+    <div class="section-row">
+      <span class="section-row-num">1</span>
+      <div><div class="section-row-name">О руководстве</div><p class="section-row-desc">Введение, цели, для кого написано и как им пользоваться.</p></div>
+    </div>
+    <div class="section-row">
+      <span class="section-row-num">2</span>
+      <div><div class="section-row-name">Частые вопросы и ответы</div><p class="section-row-desc">30+ вопросов, которые задают предприниматели и НКО о грантах — с развёрнутыми ответами.</p></div>
+    </div>
+    <div class="section-row">
+      <span class="section-row-num">3</span>
+      <div><div class="section-row-name">Работа с грантами</div><p class="section-row-desc">Как искать гранты, понимать требования доноров, составлять бюджет и подавать заявку.</p></div>
+    </div>
+    <div class="section-row">
+      <span class="section-row-num">4</span>
+      <div><div class="section-row-name">Проектирование</div><p class="section-row-desc">Методология «3 Дерева»®, разработка логической рамки, цели, результаты, индикаторы.</p></div>
+    </div>
+    <div class="section-row">
+      <span class="section-row-num">5</span>
+      <div><div class="section-row-name">Полезные ресурсы</div><p class="section-row-desc">Список доноров, инвестфондов, консультантов, ссылки на сайты и инструменты для ЦА.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTHOR -->
+<div class="section" style="padding-top:0">
+  <span class="section-tag">Автор</span>
+  <h2 class="section-title">Об <em>авторе</em></h2>
+  <div class="author-block">
+    <div class="author-left">
+      <div class="author-name">Азат Исраилов</div>
+      <div class="author-role">Консультант по фандрайзингу · 15+ лет опыта · Бишкек, Кыргызстан</div>
+      <p class="author-bio">
+        Консультант по фандрайзингу и управлению проектами с опытом с 2008 года. За это время привлёк финансирование на сумму $2.3 млн в социальные и коммерческие проекты.
+      </p>
+      <p class="author-bio" style="margin-top:1rem">
+        Автор запатентованной методологии «3 Дерева»®. Первое издание руководства разошлось тиражом более 800 экземпляров в Кыргызстане, Казахстане, Узбекистане и Таджикистане.
+      </p>
+      <div class="author-copyright">
+        © Текст: Азат Исраилов, 2022–2026<br>
+        Свидетельство об авторском праве Кыргызпатента № 4760 от 02 марта 2022 года.<br>
+        Все права защищены.
+      </div>
+    </div>
+    <div class="author-right">
+      <p style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1.25rem">Бонусы для предзаказчиков</p>
+      <div class="bonuses-list">
+        <div class="bonus-item">
+          <div class="bonus-dot"></div>
+          <div class="bonus-text"><strong>PDF-пакет</strong> с дополнительными практическими материалами — сразу после оплаты.</div>
+        </div>
+        <div class="bonus-item">
+          <div class="bonus-dot"></div>
+          <div class="bonus-text"><strong>Бесплатное участие</strong> в вебинарах по фандрайзингу при их проведении.</div>
+        </div>
+        <div class="bonus-item">
+          <div class="bonus-dot"></div>
+          <div class="bonus-text"><strong>Скидка</strong> на следующие руководства серии.</div>
+        </div>
+        <div class="bonus-item">
+          <div class="bonus-dot"></div>
+          <div class="bonus-text"><strong>Для консультантов</strong> — возможность попасть со скидкой в список консультантов внутри руководства.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <div class="final-cta-left">
+    <div class="final-cta-title">Оформите предзаказ<br>до <em>15 июня — 1 500 сом</em></div>
+    <div class="final-cta-sub">После 15 июня цена вырастет до 1 700 сом</div>
+  </div>
+  <div class="final-cta-right">
+    <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="btn-preorder-dark" target="_blank">
+      Оформить предзаказ →
+    </a>
+    <a href="https://t.me/connect4faq/137" class="btn-checklist-dark" target="_blank">
+      Бесплатный путеводитель по грантам
+    </a>
+  </div>
+</div>
+</Base>
