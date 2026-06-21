@@ -54,6 +54,8 @@ const trainings = defineCollection({
   schema: z.object({
     title: z.string(),
     topics: z.array(z.string()),
+    date: z.string().optional(),
+    excerpt: z.string().optional(),
     description: z.string(),
     duration: z.string(),
     format: z.enum(['online', 'offline', 'both']),
