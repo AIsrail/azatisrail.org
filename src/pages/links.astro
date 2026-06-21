@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Полезные ссылки" description="Соцсети, каналы и ресурсы connect4pro — гранты, инвестиции, тренинги и сообщество для бизнеса и НКО Центральной Азии.">
+<style>
+  .page-header { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+  .page-tag { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; display: block; }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); max-width: 560px; line-height: 1.75; }
+
+  .cat-block { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .cat-block:last-child { border-bottom: none; }
+  .cat-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .cat-icon { font-size: 1.1rem; }
+
+  .links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--border); }
+  .link-card {
+    padding: 1.5rem 1.75rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    text-decoration: none; color: inherit; transition: background 0.2s;
+  }
+  .link-card:nth-child(2n) { border-right: none; }
+  .link-card:last-child { border-bottom: none; }
+  .link-card:hover { background: var(--bg-card); }
+  .link-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; line-height: 1.3; }
+  .link-url { font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.2rem; word-break: break-all; }
+  .link-arrow { font-size: 1rem; color: var(--accent-light); flex-shrink: 0; transition: transform 0.2s, color 0.2s; }
+  .link-card:hover .link-arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .links-grid { grid-template-columns: 1fr; }
+    .link-card { border-right: none; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="page-header">
+    <span class="page-tag">connect4pro</span>
+    <h1 class="page-title">Полезные <em>ссылки</em></h1>
+    <p class="page-desc">Соцсети, каналы и ресурсы, где мы делимся информацией про гранты, инвестиции, тренинги и возможности для бизнеса и НКО Центральной Азии.</p>
+  </div>
+
+  <!-- FACEBOOK -->
+  <div class="cat-block">
+    <p class="cat-label"><span class="cat-icon">📘</span> Facebook</p>
+    <div class="links-grid">
+      <a href="https://www.facebook.com/connect4kg" class="link-card" target="_blank">
+        <div><div class="link-name">Основная страница</div><div class="link-url">facebook.com/connect4kg</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://www.facebook.com/groups/business4kg" class="link-card" target="_blank">
+        <div><div class="link-name">Бизнес в КР</div><div class="link-url">facebook.com/groups/business4kg</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://www.facebook.com/groups/konkursKG" class="link-card" target="_blank">
+        <div><div class="link-name">Конкурсы</div><div class="link-url">facebook.com/groups/konkursKG</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://www.facebook.com/groups/KGtraining" class="link-card" target="_blank">
+        <div><div class="link-name">Тренинги</div><div class="link-url">facebook.com/groups/KGtraining</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://www.facebook.com/groups/training4south" class="link-card" target="_blank">
+        <div><div class="link-name">Тренинги на Юге</div><div class="link-url">facebook.com/groups/training4south</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- TELEGRAM -->
+  <div class="cat-block">
+    <p class="cat-label"><span class="cat-icon">✈️</span> Telegram</p>
+    <div class="links-grid">
+      <a href="https://t.me/connect4_pro" class="link-card" target="_blank">
+        <div><div class="link-name">Основной канал</div><div class="link-url">t.me/connect4_pro</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://t.me/connect4profi" class="link-card" target="_blank">
+        <div><div class="link-name">Специалисты</div><div class="link-url">t.me/connect4profi</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://t.me/KGbusiness" class="link-card" target="_blank">
+        <div><div class="link-name">Про бизнес</div><div class="link-url">t.me/KGbusiness</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://t.me/KGinvest" class="link-card" target="_blank">
+        <div><div class="link-name">Даём или ищем инвестиции</div><div class="link-url">t.me/KGinvest</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- OTHER SOCIALS -->
+  <div class="cat-block">
+    <p class="cat-label"><span class="cat-icon">📲</span> Другие соцсети</p>
+    <div class="links-grid">
+      <a href="https://www.instagram.com/connect4.pro" class="link-card" target="_blank">
+        <div><div class="link-name">Instagram</div><div class="link-url">instagram.com/connect4.pro</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://www.youtube.com/channel/UCqSP0GUD9NwtlaMn4fQeOIQ" class="link-card" target="_blank">
+        <div><div class="link-name">YouTube</div><div class="link-url">youtube.com/@connect4pro</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="https://twitter.com/connect4pro" class="link-card" target="_blank">
+        <div><div class="link-name">Twitter / X</div><div class="link-url">twitter.com/connect4pro</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="cat-block">
+    <p class="cat-label"><span class="cat-icon">🔗</span> Ресурсы и инструменты</p>
+    <div class="links-grid">
+      <a href="http://connect4baza.tilda.ws" class="link-card" target="_blank">
+        <div><div class="link-name">База данных доноров</div><div class="link-url">connect4baza.tilda.ws</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="http://pro4dev.tilda.ws" class="link-card" target="_blank">
+        <div><div class="link-name">Тренинги</div><div class="link-url">pro4dev.tilda.ws</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a href="http://prof4devs.tilda.ws" class="link-card" target="_blank">
+        <div><div class="link-name">Курс для фандрайзеров</div><div class="link-url">prof4devs.tilda.ws</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</div>
+</Base>
