@@ -7,7 +7,12 @@ const publications = (await getCollection('publications')).slice(0,3);
 const funding = (await getCollection('funding')).slice(0,3);
 const videos = (await getCollection('videos')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()).slice(0,3);
 const courses = (await getCollection('courses')).slice(0,3);
-const trainings = (await getCollection('trainings')).slice(0,3);
+const trainings = (await getCollection('trainings')).sort((a, b) => {
+  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return db - da;
+});
+const latestTraining = trainings.find(t => !t.data.isPartner) ?? trainings[0];
 
 const tagLabels: Record<string,string> = {
   fundraising: 'Фандрайзинг', ngo: 'НКО', business: 'Бизнес',
@@ -97,7 +102,72 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
 
   @media (max-width: 768px) {
     .hero { flex-direction: column; padding: 2rem 1.25rem; }
-    .ai-block { grid-template-columns: 1fr; }
+  }
+
+  /* BOOK PROMO */
+  .book-promo {
+    background: var(--bg-card); border: 1px solid var(--border);
+    display: grid; grid-template-columns: 220px 1fr auto; gap: 2.5rem;
+    align-items: center; padding: 2.5rem;
+  }
+  .book-promo-cover { width: 100%; filter: drop-shadow(0 10px 24px rgba(28,24,20,0.16)); }
+  .book-promo-tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+  .book-promo-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; line-height: 1.15; margin-bottom: 0.75rem; }
+  .book-promo-title em { font-style: italic; color: var(--accent); }
+  .book-promo-desc { font-size: 0.9rem; color: var(--ink-muted); line-height: 1.75; max-width: 480px; }
+  .book-promo-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
+  .book-promo-price { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; color: var(--ink); white-space: nowrap; }
+  @media (max-width: 900px) {
+    .book-promo { grid-template-columns: 1fr; text-align: center; padding: 2rem; }
+    .book-promo-cover { max-width: 160px; margin: 0 auto; }
+    .book-promo-right { align-items: center; }
+    .book-promo-desc { margin: 0 auto; }
+  }
+
+  /* ЗНАНИЯ & НАВЫКИ — unified trainings + video section */
+  .knowledge-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0; border: 1px solid var(--border); }
+
+  /* training promo (left) */
+  .training-promo {
+    background: var(--ink); padding: 3rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .training-promo-live {
+    display: inline-flex; align-items: center; gap: 0.6rem; align-self: flex-start;
+    font-size: 0.78rem; color: var(--accent-light); letter-spacing: 0.03em;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.4rem 1rem;
+  }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-light); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .training-promo-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500; color: var(--bg); line-height: 1.25; }
+  .training-promo-text { font-size: 0.92rem; color: rgba(246,241,233,0.7); line-height: 1.7; }
+  .training-promo-sub { font-size: 0.85rem; color: rgba(246,241,233,0.45); line-height: 1.7; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.25rem; }
+  .training-promo-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .training-promo-ctas .btn { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .training-promo-ctas .btn:hover { background: var(--accent-light); border-color: var(--accent-light); }
+  .training-promo-ctas .btn-ghost { color: rgba(246,241,233,0.6); border-color: rgba(255,255,255,0.18); }
+  .training-promo-ctas .btn-ghost:hover { color: var(--bg); border-color: rgba(255,255,255,0.4); background: none; }
+
+  /* video side (right) */
+  .video-side { padding: 2rem; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+  .video-side-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .video-side-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+  .video-side-list { display: flex; flex-direction: column; gap: 1rem; }
+  .vid-mini { display: flex; gap: 0.85rem; text-decoration: none; color: inherit; align-items: center; transition: opacity 0.2s; }
+  .vid-mini:hover { opacity: 0.8; }
+  .vid-mini-thumb { width: 92px; aspect-ratio: 16/9; background: #2A2218; position: relative; flex-shrink: 0; overflow: hidden; }
+  .vid-mini-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .vid-mini-play { position: absolute; inset: 0; margin: auto; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; }
+  .vid-mini-play::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 4px 0 4px 7px; border-color: transparent transparent transparent white; margin-left: 2px; }
+  .vid-mini-duration { position: absolute; bottom: 3px; right: 3px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.6rem; padding: 1px 4px; }
+  .vid-mini-info { min-width: 0; }
+  .vid-mini-title { font-size: 0.85rem; font-weight: 400; color: var(--ink); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .vid-mini-views { font-size: 0.72rem; color: var(--ink-muted); margin-top: 0.2rem; display: block; }
+
+  @media (max-width: 900px) {
+    .knowledge-grid { grid-template-columns: 1fr; }
+    .video-side { border-left: none; border-top: 1px solid var(--border); }
   }
 </style>
 
@@ -113,6 +183,22 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
       <a href="/about" class="btn btn-ghost">Обо мне →</a>
     </div>
   </div>
+</div>
+
+<!-- BOOK PROMO -->
+<div class="wrap" style="padding-top:2rem">
+  <a href="/book" class="book-promo" style="text-decoration:none;color:inherit;display:grid">
+    <img src="/book-cover.png" alt="Как привлечь денежный грант" class="book-promo-cover" />
+    <div>
+      <p class="book-promo-tag">Книга · 2-е издание · Уже в продаже</p>
+      <h2 class="book-promo-title">Как привлечь <em>денежный грант</em><br>в бизнес или проект</h2>
+      <p class="book-promo-desc">Авторская методология «3 Дерева»®, гранты для бизнеса и НКО, работа с ИИ, 40+ источников финансирования. Более 250 страниц практики.</p>
+    </div>
+    <div class="book-promo-right">
+      <span class="book-promo-price">1 900 сом</span>
+      <span class="btn">Узнать подробнее →</span>
+    </div>
+  </a>
 </div>
 
 <div class="wrap">
@@ -231,58 +317,65 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
 
 <div class="wrap">
 
-  <!-- ⑤ ВИДЕО -->
+  <!-- ⑤ ЗНАНИЯ & НАВЫКИ -->
   <div class="block reveal">
     <div class="block-head">
       <div class="block-head-left">
-        <span class="block-tag">YouTube</span>
-        <h2 class="block-title">Видео и <em>разборы</em></h2>
+        <span class="block-tag">Обучение · 10+ тем</span>
+        <h2 class="block-title">Знания <em>&amp;</em> навыки</h2>
       </div>
-      <a href="https://www.youtube.com/@connect4fund" class="all-link" target="_blank">На YouTube →</a>
     </div>
-    <div class="grid3">
-      {videos.map(v => (
-        <a href={v.data.youtubeUrl} class="vid-card" target="_blank">
-          <div class="vid-thumb">
-            {v.data.youtubeId
-              ? <img src={`https://img.youtube.com/vi/${v.data.youtubeId}/mqdefault.jpg`} alt={v.data.title} loading="lazy" />
-              : null}
-            <div class="vid-play"><div class="vid-play-icon"></div></div>
-            {v.data.duration && <span class="vid-duration">{v.data.duration}</span>}
-          </div>
-          <div class="vid-info">
-            <span class="vid-meta">{v.data.date ? new Date(v.data.date).toLocaleDateString('ru-RU',{month:'long',year:'numeric'}) : ''}</span>
-            <div class="vid-title">{v.data.title}</div>
-            {v.data.views && <span class="vid-views">{v.data.views} просмотров</span>}
-          </div>
-        </a>
-      ))}
-      {videos.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся видео.</p>}
-    </div>
-  </div>
+    <div class="knowledge-grid">
 
-  <!-- ⑥ КУРСЫ -->
-  <div class="block reveal">
-    <div class="block-head">
-      <div class="block-head-left">
-        <span class="block-tag">Обучение</span>
-        <h2 class="block-title">Курсы и <em>тренинги</em></h2>
+      <!-- TRAINING PROMO (left, primary) -->
+      <div class="training-promo">
+        {latestTraining && (
+          <>
+            <div class="training-promo-live">
+              <span class="live-dot"></span>
+              {latestTraining.data.date
+                ? `Ближайший тренинг · ${new Date(latestTraining.data.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}`
+                : 'Ближайший тренинг'}
+            </div>
+            <h3 class="training-promo-title">{latestTraining.data.title.replace(/^[^\wа-яА-Я]+/, '')}</h3>
+            <p class="training-promo-text">{latestTraining.data.excerpt ?? 'Практическая методология разработки проектов — от идеи до готовой заявки на грант.'}</p>
+          </>
+        )}
+        <p class="training-promo-sub">
+          Помимо этого — программы по проектированию, управлению и развитию бизнеса. Очно в Бишкеке и онлайн для всей Центральной Азии.
+        </p>
+        <div class="training-promo-ctas">
+          <a href="/trainings" class="btn">Смотреть все тренинги →</a>
+          <a href="/contact" class="btn btn-ghost">Провести тренинг с нами</a>
+        </div>
       </div>
-      <a href="/courses" class="all-link">Все курсы →</a>
-    </div>
-    <div class="grid3">
-      {trainings.map(t => (
-        <a href={`/trainings`} class="course-card">
-          <span class="course-badge">{t.data.topics?.join(', ')}</span>
-          <div class="course-title">{t.data.title}</div>
-          <p class="course-desc">{t.data.description}</p>
-          <div class="course-meta">
-            {t.data.duration && <span>{t.data.duration}</span>}
-            {t.data.format && <span>{t.data.format === 'both' ? 'Онлайн · Офлайн' : t.data.format}</span>}
-          </div>
-        </a>
-      ))}
-      {trainings.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся тренинги.</p>}
+
+      <!-- VIDEOS (right, compact) -->
+      <div class="video-side">
+        <div class="video-side-head">
+          <span class="video-side-label">YouTube · разборы</span>
+          <a href="https://www.youtube.com/@connect4fund" class="all-link" target="_blank">Все видео →</a>
+        </div>
+        <div class="video-side-list">
+          {videos.slice(0,3).map(v => (
+            <a href={v.data.youtubeUrl} class="vid-mini" target="_blank">
+              <div class="vid-mini-thumb">
+                {v.data.youtubeId
+                  ? <img src={`https://img.youtube.com/vi/${v.data.youtubeId}/mqdefault.jpg`} alt={v.data.title} loading="lazy" />
+                  : null}
+                <div class="vid-mini-play"></div>
+                {v.data.duration && <span class="vid-mini-duration">{v.data.duration}</span>}
+              </div>
+              <div class="vid-mini-info">
+                <div class="vid-mini-title">{v.data.title}</div>
+                {v.data.views && <span class="vid-mini-views">{v.data.views} просмотров</span>}
+              </div>
+            </a>
+          ))}
+          {videos.length === 0 && <p style="color:var(--ink-muted);font-size:0.85rem">Скоро появятся видео.</p>}
+        </div>
+      </div>
+
     </div>
   </div>
 
