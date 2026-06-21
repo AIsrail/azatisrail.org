@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Как привлечь денежный грант — Руководство Азата Исраилова" description="2-е переработанное издание руководства по фандрайзингу. Методология «3 Дерева»®, гранты для бизнеса и НКО, работа с ИИ, 40+ источников финансирования. Предзаказ — 1 500 сом.">
+<Base title="Как привлечь денежный грант — Руководство Азата Исраилова" description="2-е переработанное издание руководства по фандрайзингу. Методология «3 Дерева»®, гранты для бизнеса и НКО, работа с ИИ, 40+ источников финансирования. Уже в продаже — 1 900 сом.">
 <style>
   /* HERO */
   .book-hero {
@@ -64,6 +64,10 @@ import Base from '../layouts/Base.astro';
     background: var(--bg-card);
     display: flex; flex-direction: column; justify-content: center;
     padding: 3rem;
+  }
+  .book-cover {
+    width: 100%; max-width: 220px; margin: 0 auto 2rem;
+    display: block; filter: drop-shadow(0 12px 28px rgba(28,24,20,0.18));
   }
   .price-label {
     font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
@@ -223,7 +227,7 @@ import Base from '../layouts/Base.astro';
 <div style="border-bottom:1px solid var(--border);">
   <div class="book-hero">
     <div class="book-hero-left">
-      <span class="book-edition">2-е издание · 2026</span>
+      <span class="book-edition">2-е издание · 2026 · Уже в продаже</span>
       <h1 class="book-title">
         Как привлечь<br>денежный грант<br>в <em>бизнес или проект</em>
       </h1>
@@ -232,7 +236,7 @@ import Base from '../layouts/Base.astro';
       </p>
       <div class="book-ctas">
         <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="btn-preorder" target="_blank">
-          Оформить предзаказ →
+          Заказать книгу →
         </a>
         <a href="https://t.me/connect4faq/137" class="btn-checklist" target="_blank">
           Бесплатный путеводитель ↗
@@ -258,29 +262,17 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
     <div class="book-hero-right">
+      <img src="/book-cover.png" alt="Обложка книги «Как привлечь денежный грант»" class="book-cover" />
       <p class="price-label">Стоимость</p>
       <div class="price-block">
         <div class="price-row featured">
-          <div>
-            <div class="price-name">Предзаказ до 15 июня</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <span class="price-val">1 500 сом</span>
-            <span class="price-badge">-12%</span>
-          </div>
-        </div>
-        <div class="price-row">
-          <span class="price-name">После 15 июня</span>
-          <span class="price-val">1 700 сом</span>
+          <span class="price-name">Печатное издание</span>
+          <span class="price-val">1 900 сом</span>
         </div>
       </div>
       <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="price-cta" target="_blank">
-        Оформить предзаказ →
+        Заказать книгу →
       </a>
-      <div class="price-bonus">
-        <div class="price-bonus-title">🎁 Бонус предзаказчикам</div>
-        <div class="price-bonus-desc">После оплаты вы получите PDF-пакет с дополнительными практическими материалами.</div>
-      </div>
       <p class="price-tilda">
         Также доступно на <a href="https://grantmanual.tilda.ws/" target="_blank">grantmanual.tilda.ws</a>
       </p>
@@ -424,15 +416,15 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
     <div class="author-right">
-      <p style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1.25rem">Бонусы для предзаказчиков</p>
+      <p style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1.25rem">Что вы получаете</p>
       <div class="bonuses-list">
         <div class="bonus-item">
           <div class="bonus-dot"></div>
-          <div class="bonus-text"><strong>PDF-пакет</strong> с дополнительными практическими материалами — сразу после оплаты.</div>
+          <div class="bonus-text"><strong>Печатная книга</strong> — более 250 страниц практической информации.</div>
         </div>
         <div class="bonus-item">
           <div class="bonus-dot"></div>
-          <div class="bonus-text"><strong>Бесплатное участие</strong> в вебинарах по фандрайзингу при их проведении.</div>
+          <div class="bonus-text"><strong>Методология «3 Дерева»®</strong> — авторская система разработки проектов.</div>
         </div>
         <div class="bonus-item">
           <div class="bonus-dot"></div>
@@ -450,12 +442,12 @@ import Base from '../layouts/Base.astro';
 <!-- FINAL CTA -->
 <div class="final-cta">
   <div class="final-cta-left">
-    <div class="final-cta-title">Оформите предзаказ<br>до <em>15 июня — 1 500 сом</em></div>
-    <div class="final-cta-sub">После 15 июня цена вырастет до 1 700 сом</div>
+    <div class="final-cta-title">Книга уже <em>в продаже — 1 900 сом</em></div>
+    <div class="final-cta-sub">Заполните форму, и мы свяжемся с вами для доставки</div>
   </div>
   <div class="final-cta-right">
     <a href="https://forms.gle/H7iPyB8r7xd6uHg67" class="btn-preorder-dark" target="_blank">
-      Оформить предзаказ →
+      Заказать книгу →
     </a>
     <a href="https://t.me/connect4faq/137" class="btn-checklist-dark" target="_blank">
       Бесплатный путеводитель по грантам
