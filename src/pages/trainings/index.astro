@@ -1,7 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-const trainings = await getCollection('trainings');
+const trainings = (await getCollection('trainings')).sort((a, b) => {
+  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return db - da;
+});
 const topicLabels: Record<string,string> = { fundraising:'Фандрайзинг', project:'Проектирование', management:'Управление', business:'Бизнес' };
 const formatLabels: Record<string,string> = { online:'Онлайн', offline:'Офлайн', both:'Онлайн · Офлайн' };
 ---
@@ -63,6 +67,17 @@ const formatLabels: Record<string,string> = { online:'Онлайн', offline:'О
   .clink:hover { color: var(--accent); border-color: var(--accent-light); }
   .clink.plink:hover { color: var(--partner); border-color: var(--partner-light); }
   .no-results { text-align: center; padding: 4rem 0; color: var(--ink-muted); display: none; }
+  .collab-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    background: var(--ink); padding: 3rem; margin-bottom: 5rem;
+  }
+  .collab-tag { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.6rem; display: block; }
+  .collab-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; color: var(--bg); line-height: 1.2; margin-bottom: 0.6rem; }
+  .collab-title em { font-style: italic; color: var(--accent-light); }
+  .collab-desc { font-size: 0.88rem; color: rgba(246,241,233,0.6); line-height: 1.7; max-width: 480px; }
+  .collab-cta .btn { background: var(--accent); border-color: var(--accent); color: var(--bg); flex-shrink: 0; }
+  .collab-cta .btn:hover { background: var(--accent-light); border-color: var(--accent-light); }
+  @media (max-width: 768px) { .collab-cta { flex-direction: column; align-items: flex-start; padding: 2rem; } }
   @media(max-width:768px){ .cards-grid { grid-template-columns: 1fr; } .page-header-row { flex-direction: column; } .cmeta { grid-template-columns: 1fr; } }
 </style>
 <div class="wrap">
@@ -106,16 +121,19 @@ const formatLabels: Record<string,string> = { online:'Онлайн', offline:'О
   <p class="results" id="rtxt">Показаны все {trainings.length} тренинга</p>
 
   <div class="cards-grid" id="grid">
-    {trainings.map(t => {
+    {trainings.map((t, idx) => {
       const isP = t.data.isPartner;
       const cls = isP ? 'partner' : '';
       const tagCls = isP ? 'partner' : 'own';
+      const dateStr = t.data.date ? new Date(t.data.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : null;
       return (
         <div class={`card ${cls}`} data-topics={t.data.topics.join(',')} data-format={t.data.format} data-author={isP ? 'partner' : 'own'}>
           <div class={`cstripe ${tagCls}`}></div>
           {isP && <span class="pbadge">Партнёр</span>}
+          {!isP && idx === 0 && <span class="pbadge" style="background:var(--accent);color:var(--bg);border-color:var(--accent)">Ближайший</span>}
           <div class="ctopics">
             {t.data.topics.map(tp => <span class={`ctag ${tagCls}`}>{topicLabels[tp] ?? tp}</span>)}
+            {dateStr && <span class={`ctag ${tagCls}`}>📅 {dateStr}</span>}
           </div>
           <h2 class="ctitle">{t.data.title}</h2>
           <p class="cdesc">{t.data.description}</p>
@@ -146,6 +164,15 @@ const formatLabels: Record<string,string> = { online:'Онлайн', offline:'О
     {trainings.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Тренинги появятся в ближайшее время.</p>}
   </div>
   <p class="no-results" id="nores">Нет тренингов по выбранным фильтрам. <button style="background:none;border:none;cursor:pointer;text-decoration:underline;font-family:var(--sans)" onclick="resetAll()">Сбросить</button></p>
+
+  <div class="collab-cta">
+    <div class="collab-left">
+      <span class="collab-tag">Сотрудничество</span>
+      <h2 class="collab-title">Проводите свои <em>тренинги?</em></h2>
+      <p class="collab-desc">Размещаем тренинги и программы партнёров в этом каталоге — бесплатно. Также открыты к совместным проектам с организациями, донорами и спонсорами, заинтересованными в развитии предпринимателей и НКО Центральной Азии.</p>
+    </div>
+    <a href="/contact" class="btn">Предложить сотрудничество →</a>
+  </div>
 </div>
 
 <script>
