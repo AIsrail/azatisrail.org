@@ -517,6 +517,7 @@ function formTrainings(item) {
 
   return `<div class="form-grid">
     ${field('f-title','Название тренинга', item.title)}
+    ${field('f-date','Дата тренинга (YYYY-MM-DD)', item.date||'')}
     ${selectField('f-format','Формат', [
       {v:'both',l:'Онлайн и Офлайн'},{v:'online',l:'Только Онлайн'},{v:'offline',l:'Только Офлайн'}
     ], item.format||'both')}
@@ -528,7 +529,8 @@ function formTrainings(item) {
         <option value="true"${item.isPartner?' selected':''}>Да (партнёр)</option>
       </select>
     </div>
-    ${textarea('f-desc','Описание', item.description, true)}
+    ${textarea('f-excerpt','Краткий анонс (1-2 предложения для главной страницы)', item.excerpt||'', true)}
+    ${textarea('f-desc','Полное описание (для страницы Тренинги)', item.description, true)}
   </div>
   <div class="section-label">Темы</div>
   <div class="chip-group">${topicChips}</div>
@@ -615,7 +617,7 @@ function addNew() {
     publications: { title:'Новая публикация', type:'guide', icon:'📖', description:'', cta:'Читать →', isFree:true },
     funding: { name:'Новый источник', category:'grants', description:'', count:'', geography:'', updatedAt:'' },
     videos: { title:'Новое видео', youtubeUrl:'', youtubeId:'', date:new Date().toISOString().slice(0,10), topic:'fundraising', duration:'', views:'' },
-    trainings: { title:'Новый тренинг', topics:[], description:'', duration:'2 дня / 16 часов', format:'both', audience:[], isPartner:false, trainerName:'Азат Исраилов', trainerRole:'Консультант', trainerInitials:'АИ', contactEmail:'azat@azatisrail.org', contactPhone:'+996 702 27 18 27', links:[] },
+    trainings: { title:'Новый тренинг', topics:[], date:new Date().toISOString().slice(0,10), excerpt:'', description:'', duration:'2 дня / 16 часов', format:'both', audience:[], isPartner:false, trainerName:'Азат Исраилов', trainerRole:'Консультант', trainerInitials:'АИ', contactEmail:'azat@azatisrail.org', contactPhone:'+996 702 27 18 27', links:[] },
     courses: { title:'Новый курс', badge:'', isFeatured:false, description:'', format:'Онлайн', duration:'', price:'', link:'' },
   };
   const item = { ...defaults[currentTab], _path: null, _sha: null };
@@ -661,7 +663,8 @@ function saveItem() {
   } else if (tab === 'trainings') {
     const topics = [...document.querySelectorAll('input[name="topic"]:checked')].map(c => c.value);
     updated = {
-      title: v('f-title'), topics, description: v('f-desc'),
+      title: v('f-title'), topics, date: v('f-date'),
+      excerpt: v('f-excerpt'), description: v('f-desc'),
       duration: v('f-duration'), format: v('f-format'),
       audience: [...window._audience],
       isPartner: v('f-partner') === 'true',
