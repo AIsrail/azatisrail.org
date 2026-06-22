@@ -16,6 +16,8 @@ const publications = defineCollection({
     title: z.string(),
     type: z.string(),
     icon: z.string().optional(),
+    image: z.string().optional(),
+    price: z.string().optional(),
     description: z.string(),
     cta: z.string().optional(),
     link: z.string().optional(),
