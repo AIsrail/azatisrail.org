@@ -23,11 +23,11 @@ const pubTypeLabels: Record<string,string> = { guide:'Руководство', a
 ---
 <Base title="Фандрайзинг. Бизнес. Инструменты для роста.">
 <style>
-  .hero { padding: 3.5rem 3rem 3rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 2rem; max-width: 1120px; margin: 0 auto; }
-  .hero h1 { font-family: var(--serif); font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+  .hero { padding: 5rem 3rem 4.5rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 3rem; max-width: 1120px; margin: 0 auto; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(3rem,5.5vw,5rem); font-weight: 500; line-height: 1.0; letter-spacing: -0.02em; }
   .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero p { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); max-width: 480px; line-height: 1.75; }
-  .hero-actions { display: flex; gap: 1rem; flex-shrink: 0; }
+  .hero p { margin-top: 1.25rem; font-size: 1rem; color: var(--ink-muted); max-width: 400px; line-height: 1.75; }
+  .hero-actions { display: flex; flex-direction: column; gap: 0.75rem; flex-shrink: 0; }
 
   /* ARTICLE CARDS */
   .art-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
@@ -182,14 +182,18 @@ const pubTypeLabels: Record<string,string> = { guide:'Руководство', a
 </style>
 
 <!-- HERO -->
-<div style="border-bottom:1px solid var(--border);">
+<div style="border-bottom:1px solid var(--border); background: linear-gradient(170deg, var(--bg) 60%, var(--bg-card) 100%);">
   <div class="hero">
     <div>
-      <h1>Фандрайзинг. Бизнес.<br><em>Инструменты для роста.</em></h1>
-      <p>Практические материалы, инструменты и курсы — для НКО, предпринимателей и консультантов Центральной Азии.</p>
+      <p style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem">
+        <span style="width:2rem;height:1px;background:var(--accent);display:inline-block"></span>
+        Бишкек · Центральная Азия · Международный опыт
+      </p>
+      <h1>Фандрайзинг.<br>Бизнес.<br><em>Инструменты для роста.</em></h1>
+      <p style="margin-top:1.25rem">Практические материалы и курсы для НКО,<br>предпринимателей и консультантов ЦА.</p>
     </div>
     <div class="hero-actions">
-      <a href="#ai" class="btn">ИИ-поиск финансирования</a>
+      <a href="#ai" class="btn btn-accent">ИИ-поиск финансирования</a>
       <a href="/about" class="btn btn-ghost">Обо мне →</a>
     </div>
   </div>
