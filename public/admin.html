@@ -460,10 +460,12 @@ function formPublications(item) {
     ${field('f-title','Название', item.title)}
     ${selectField('f-type','Тип', [
       {v:'guide',l:'Руководство (PDF)'},{v:'article',l:'Статья'},
-      {v:'pdf',l:'Гайд / PDF'},{v:'tool',l:'Инструмент'}
+      {v:'pdf',l:'Гайд / PDF'},{v:'tool',l:'Инструмент'},{v:'book',l:'Книга'}
     ], item.type)}
-    ${field('f-icon','Иконка (эмодзи)', item.icon)}
-    ${field('f-link','Ссылка', item.link||'', 'url')}
+    ${field('f-icon','Иконка (эмодзи) — если нет обложки', item.icon)}
+    ${field('f-image','Обложка (путь к файлу, н-р: /book-cover.png)', item.image||'')}
+    ${field('f-price','Цена (н-р: 1 900 сом) — оставь пустым если бесплатно', item.price||'')}
+    ${field('f-link','Ссылка (н-р: /book или https://...)', item.link||'')}
     ${textarea('f-desc','Описание', item.description, true)}
     ${field('f-cta','Текст кнопки', item.cta||'Читать →')}
     <div class="form-group">
@@ -644,6 +646,7 @@ function saveItem() {
   } else if (tab === 'publications') {
     updated = {
       title: v('f-title'), type: v('f-type'), icon: v('f-icon'),
+      image: v('f-image'), price: v('f-price'),
       link: v('f-link'), description: v('f-desc'), cta: v('f-cta'),
       isFree: v('f-free') === 'true',
       _path: item._path, _sha: item._sha
@@ -722,7 +725,7 @@ function serializeItem(tab, item) {
     return `---\ntitle: "${item.title}"\ndate: "${item.date}"\ntag: ${item.tag}\nexcerpt: "${item.excerpt}"\n---\n\n${item._body||''}`;
   }
   if (tab === 'publications') {
-    return `---\ntitle: "${item.title}"\ntype: ${item.type}\nicon: "${item.icon||''}"\ndescription: "${item.description}"\ncta: "${item.cta||''}"\nlink: "${item.link||''}"\nisFree: ${item.isFree}\n---\n`;
+    return `---\ntitle: "${item.title}"\ntype: ${item.type}\nicon: "${item.icon||''}"\nimage: "${item.image||''}"\nprice: "${item.price||''}"\ndescription: "${item.description}"\ncta: "${item.cta||''}"\nlink: "${item.link||''}"\nisFree: ${item.isFree}\n---\n`;
   }
   // JSON collections
   const clean = {...item};
