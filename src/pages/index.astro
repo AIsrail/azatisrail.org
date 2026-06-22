@@ -19,6 +19,7 @@ const tagLabels: Record<string,string> = {
   acceleration: 'Акселерация', management: 'Управление', other: 'Разное'
 };
 const categoryLabels: Record<string,string> = { grants: 'Гранты', investors: 'Инвестиции', banks: 'Банки' };
+const pubTypeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент', book:'Книга' };
 ---
 <Base title="Фандрайзинг. Бизнес. Инструменты для роста.">
 <style>
@@ -49,6 +50,15 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
   .pub-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; line-height: 1.3; flex: 1; }
   .pub-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.6; }
   .pub-cta { font-size: 0.78rem; color: var(--accent); margin-top: 0.5rem; }
+  .pub-card-market { padding: 0; }
+  .pub-card-market .pub-type { padding: 1rem 1.25rem 0; }
+  .pub-card-market .pub-title { padding: 0 1.25rem; }
+  .pub-card-market .pub-desc { padding: 0 1.25rem; }
+  .pub-card-market .pub-cta { padding: 0 1.25rem 1.25rem; }
+  .pub-market-cover { position: relative; aspect-ratio: 4/3; background: var(--bg); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .pub-market-cover img { max-height: 92%; max-width: 78%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(28,24,20,0.18)); transition: transform 0.25s; }
+  .pub-card-market:hover .pub-market-cover img { transform: scale(1.04); }
+  .pub-market-price { position: absolute; top: 0.85rem; right: 0.85rem; background: var(--ink); color: var(--bg); font-family: var(--serif); font-size: 0.95rem; font-weight: 500; padding: 4px 12px; }
 
   /* FUNDING CARDS */
   .don-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
@@ -238,15 +248,30 @@ const categoryLabels: Record<string,string> = { grants: 'Гранты', investor
       <a href="/publications" class="all-link">Все публикации →</a>
     </div>
     <div class="grid3">
-      {publications.map(pub => (
-        <a href={pub.data.link ?? `/publications/${pub.slug}`} class="pub-card" target={pub.data.link ? '_blank' : undefined}>
-          <span class="pub-type">{pub.data.type}</span>
-          <div class="pub-icon">{pub.data.icon}</div>
-          <div class="pub-title">{pub.data.title}</div>
-          <p class="pub-desc">{pub.data.description}</p>
-          <span class="pub-cta">{pub.data.cta}</span>
-        </a>
-      ))}
+      {publications.map(pub => {
+        const isInternal = pub.data.link?.startsWith('/');
+        const href = pub.data.link ?? `/publications/${pub.slug}`;
+        return pub.data.image ? (
+          <a href={href} class="pub-card pub-card-market" target={isInternal ? undefined : '_blank'}>
+            <div class="pub-market-cover">
+              <img src={pub.data.image} alt={pub.data.title} loading="lazy" />
+              {pub.data.price && <span class="pub-market-price">{pub.data.price}</span>}
+            </div>
+            <span class="pub-type">{pubTypeLabels[pub.data.type] ?? pub.data.type}</span>
+            <div class="pub-title">{pub.data.title}</div>
+            <p class="pub-desc">{pub.data.description}</p>
+            <span class="pub-cta">{pub.data.cta}</span>
+          </a>
+        ) : (
+          <a href={href} class="pub-card" target={isInternal ? undefined : '_blank'}>
+            <span class="pub-type">{pubTypeLabels[pub.data.type] ?? pub.data.type}</span>
+            <div class="pub-icon">{pub.data.icon}</div>
+            <div class="pub-title">{pub.data.title}</div>
+            <p class="pub-desc">{pub.data.description}</p>
+            <span class="pub-cta">{pub.data.cta}</span>
+          </a>
+        );
+      })}
       {publications.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся публикации.</p>}
     </div>
   </div>
