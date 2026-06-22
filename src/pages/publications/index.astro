@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 const pubs = await getCollection('publications');
-const typeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент' };
+const typeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент', book:'Книга' };
 ---
 <Base title="Публикации">
 <style>
@@ -21,6 +21,15 @@ const typeLabels: Record<string,string> = { guide:'Руководство', arti
   .pub-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
   .pub-free { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
   .pub-cta { font-size: 0.78rem; color: var(--accent); }
+  .pub-card-market { padding: 0; }
+  .pub-card-market .pub-type { padding: 1.25rem 1.5rem 0; }
+  .pub-card-market .pub-title { padding: 0 1.5rem; }
+  .pub-card-market .pub-desc { padding: 0 1.5rem; }
+  .pub-card-market .pub-foot { margin: 0 1.5rem 1.5rem; padding-top: 1rem; }
+  .pub-market-cover { position: relative; aspect-ratio: 4/3; background: var(--bg); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .pub-market-cover img { max-height: 92%; max-width: 78%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(28,24,20,0.18)); transition: transform 0.25s; }
+  .pub-card-market:hover .pub-market-cover img { transform: scale(1.04); }
+  .pub-market-price { position: absolute; top: 0.85rem; right: 0.85rem; background: var(--ink); color: var(--bg); font-family: var(--serif); font-size: 0.95rem; font-weight: 500; padding: 4px 12px; }
   @media(max-width:768px){ .pub-grid { grid-template-columns: 1fr; } .pub-card { border-right: none; } }
 </style>
 <div class="wrap">
@@ -30,18 +39,36 @@ const typeLabels: Record<string,string> = { guide:'Руководство', arti
     <p class="page-desc">Бесплатные и платные материалы по фандрайзингу, управлению проектами и развитию организаций.</p>
   </div>
   <div class="pub-grid">
-    {pubs.map(pub => (
-      <a href={pub.data.link ?? `/publications/${pub.slug}`} class="pub-card" target={pub.data.link ? '_blank' : undefined}>
-        <span class="pub-type">{typeLabels[pub.data.type] ?? pub.data.type}</span>
-        {pub.data.icon && <div class="pub-icon">{pub.data.icon}</div>}
-        <div class="pub-title">{pub.data.title}</div>
-        <p class="pub-desc">{pub.data.description}</p>
-        <div class="pub-foot">
-          <span class="pub-free">{pub.data.isFree ? 'Бесплатно' : 'Платно'}</span>
-          <span class="pub-cta">{pub.data.cta ?? 'Открыть →'}</span>
-        </div>
-      </a>
-    ))}
+    {pubs.map(pub => {
+      const isInternal = pub.data.link?.startsWith('/');
+      const href = pub.data.link ?? `/publications/${pub.slug}`;
+      return pub.data.image ? (
+        <a href={href} class="pub-card pub-card-market" target={isInternal ? undefined : '_blank'}>
+          <div class="pub-market-cover">
+            <img src={pub.data.image} alt={pub.data.title} loading="lazy" />
+            {pub.data.price && <span class="pub-market-price">{pub.data.price}</span>}
+          </div>
+          <span class="pub-type">{typeLabels[pub.data.type] ?? pub.data.type}</span>
+          <div class="pub-title">{pub.data.title}</div>
+          <p class="pub-desc">{pub.data.description}</p>
+          <div class="pub-foot">
+            <span class="pub-free">{pub.data.price ? 'В продаже' : (pub.data.isFree ? 'Бесплатно' : 'Платно')}</span>
+            <span class="pub-cta">{pub.data.cta ?? 'Открыть →'}</span>
+          </div>
+        </a>
+      ) : (
+        <a href={href} class="pub-card" target={isInternal ? undefined : '_blank'}>
+          <span class="pub-type">{typeLabels[pub.data.type] ?? pub.data.type}</span>
+          {pub.data.icon && <div class="pub-icon">{pub.data.icon}</div>}
+          <div class="pub-title">{pub.data.title}</div>
+          <p class="pub-desc">{pub.data.description}</p>
+          <div class="pub-foot">
+            <span class="pub-free">{pub.data.isFree ? 'Бесплатно' : 'Платно'}</span>
+            <span class="pub-cta">{pub.data.cta ?? 'Открыть →'}</span>
+          </div>
+        </a>
+      );
+    })}
     {pubs.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Публикации появятся в ближайшее время.</p>}
   </div>
 </div>
