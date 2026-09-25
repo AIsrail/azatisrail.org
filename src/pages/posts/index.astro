@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('posts')).sort((a,b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг', ngo:'НКО', business:'Бизнес', acceleration:'Акселерация', management:'Управление', other:'Разное' };
 ---
-<Base title="Посты и статьи">
+<Base title="Статьи о грантах и фандрайзинге" description="Практические статьи о грантах, донорах и фандрайзинге: ошибки в заявках, как найти финансирование для НКО и бизнеса в Центральной Азии.">
 <style>
   .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
   .page-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.1; }

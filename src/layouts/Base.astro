@@ -2,16 +2,83 @@
 export interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile' | 'book';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
-const { title, description = 'Практические материалы по фандрайзингу, гранты, курсы и тренинги для НКО и предпринимателей.' } = Astro.props;
+const {
+  title,
+  description = 'Практические материалы по фандрайзингу, гранты, курсы и тренинги для НКО и предпринимателей.',
+  image = '/og-image.jpg',
+  type = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+const site = Astro.site ?? new URL('https://azatisrail.org');
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, site).href;
+const imageUrl = new URL(image, site).href;
+const fullTitle = `${title} — Азат Исраилов`;
+const person = {
+  '@type': 'Person',
+  '@id': 'https://azatisrail.org/#person',
+  name: 'Азат Исраилов',
+  alternateName: ['Azat Israilov', 'Исраилов Азат'],
+  jobTitle: 'Консультант по фандрайзингу, тренер, бизнес-консультант',
+  description: 'Консультант, тренер и фандрайзер из Бишкека. 15+ лет в международном развитии, привлёк $2.3M финансирования, автор методологии «3 Дерева» и руководства «Как привлечь денежный грант».',
+  url: 'https://azatisrail.org/about/',
+  image: 'https://azatisrail.org/og-image.jpg',
+  email: 'mailto:azat@azatisrail.org',
+  telephone: '+996702271827',
+  address: { '@type': 'PostalAddress', addressLocality: 'Бишкек', addressCountry: 'KG' },
+  knowsLanguage: ['ru', 'ky', 'en'],
+  knowsAbout: ['Фандрайзинг', 'Грантовые заявки', 'Работа с донорами', 'Стратегическое планирование НКО', 'Бизнес-консалтинг', 'Акселерация МСБ', 'Центральная Азия'],
+  worksFor: { '@type': 'Organization', name: 'Connect4Pro', url: 'https://azatisrail.cc/' },
+  sameAs: [
+    'https://linkedin.com/in/azat-israilov-6b515228/',
+    'https://www.youtube.com/@connect4fund',
+    'https://azatisrail.cc/',
+    'https://github.com/AIsrail',
+  ],
+};
+const graph = [
+  person,
+  {
+    '@type': 'WebSite',
+    '@id': 'https://azatisrail.org/#website',
+    url: 'https://azatisrail.org/',
+    name: 'Азат Исраилов — фандрайзинг, гранты, бизнес',
+    inLanguage: 'ru',
+    publisher: { '@id': 'https://azatisrail.org/#person' },
+  },
+  ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+];
+const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 ---
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — Азат Исраилов</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+  <meta name="author" content="Азат Исраилов" />
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content="Азат Исраилов" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={imageUrl} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imageUrl} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <script type="application/ld+json" set:html={ldJson} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
   <style is:global>

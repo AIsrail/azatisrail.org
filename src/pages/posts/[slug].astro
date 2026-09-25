@@ -11,7 +11,7 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг', ngo:'НКО', business:'Бизнес', acceleration:'Акселерация', management:'Управление', other:'Разное' };
 ---
-<Base title={post.data.title} description={post.data.excerpt}>
+<Base title={post.data.title} description={post.data.excerpt} type="article" jsonLd={{ '@type': 'BlogPosting', headline: post.data.title, description: post.data.excerpt, datePublished: post.data.date, inLanguage: 'ru', url: `https://azatisrail.org/posts/${post.slug}/`, author: { '@id': 'https://azatisrail.org/#person' }, publisher: { '@id': 'https://azatisrail.org/#person' }, mainEntityOfPage: `https://azatisrail.org/posts/${post.slug}/` }}>
 <style>
   .post-header { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--border); }
   .post-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--ink-muted); text-decoration: none; margin-bottom: 2rem; transition: color 0.2s; }
