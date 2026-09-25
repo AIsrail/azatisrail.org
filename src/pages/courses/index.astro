@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 const courses = await getCollection('courses');
 ---
-<Base title="Курсы">
+<Base title="Онлайн-курсы по фандрайзингу" description="Онлайн-курс «Фандрайзинг с нуля до гранта»: 6 модулей, от психологии доноров до выигрышной заявки. Для НКО, предпринимателей и консультантов Центральной Азии.">
 <style>
   .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
   .page-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.1; }

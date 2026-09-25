@@ -9,7 +9,7 @@ const trainings = (await getCollection('trainings')).sort((a, b) => {
 const topicLabels: Record<string,string> = { fundraising:'Фандрайзинг', project:'Проектирование', management:'Управление', business:'Бизнес' };
 const formatLabels: Record<string,string> = { online:'Онлайн', offline:'Офлайн', both:'Онлайн · Офлайн' };
 ---
-<Base title="Курсы и тренинги">
+<Base title="Тренинги по фандрайзингу и проектированию" description="Очные и онлайн-тренинги Азата Исраилова и партнёров: фандрайзинг, написание грантовых заявок, проектирование и управление. Бишкек и онлайн.">
 <style>
   .page-header { padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); }
   .page-header-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }

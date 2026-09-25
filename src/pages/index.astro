@@ -20,8 +20,20 @@ const tagLabels: Record<string,string> = {
 };
 const categoryLabels: Record<string,string> = { grants: 'Гранты', investors: 'Инвестиции', banks: 'Банки' };
 const pubTypeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент', book:'Книга' };
+
+const faq = [
+  { q: 'Как получить грант для бизнеса в Кыргызстане?', a: 'Сначала найдите донора, чьи приоритеты совпадают с вашей задачей: международные фонды, программы развития и банки регулярно объявляют конкурсы для МСБ в Центральной Азии. Затем сформулируйте проблему, решение и измеримый результат по методологии «3 Дерева» и подготовьте заявку строго по форме донора. Каталог 60+ доноров есть в разделе «Источники финансирования».' },
+  { q: 'Может ли НКО получить грант без опыта?', a: 'Да. Многие доноры выделяют малые гранты для новых организаций. Важно показать чёткую проблему, реалистичный бюджет и команду, способную выполнить проект. Начинать лучше с малых грантов и партнёрства с опытными организациями.' },
+  { q: 'Что такое методология «3 Дерева»?', a: '«3 Дерева»® — авторская методология Азата Исраилова для подготовки грантовых заявок и бизнес-планов: дерево проблем, дерево целей и дерево действий. Она помогает выстроить логику проекта так, чтобы донор увидел связь между проблемой, действиями и результатом.' },
+  { q: 'Чем помогает консультант по фандрайзингу?', a: 'Консультант помогает найти подходящих доноров, выстроить логику проекта, написать и проверить заявку, составить бюджет и подготовиться к отчётности. Азат Исраилов работает с НКО, предпринимателями и консультантами Центральной Азии очно в Бишкеке и онлайн.' },
+  { q: 'Где купить книгу «Как привлечь денежный грант»?', a: '2-е издание книги (2026, 250+ страниц, 1 900 сом) можно заказать на странице «Книга» на azatisrail.org.' },
+];
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
 ---
-<Base title="Фандрайзинг. Бизнес. Инструменты для роста.">
+<Base title="Фандрайзинг, гранты и бизнес-консалтинг в Центральной Азии" description="Азат Исраилов — консультант по фандрайзингу из Бишкека: как получить грант для бизнеса и НКО, методология «3 Дерева», книга, курсы, тренинги и каталог 60+ доноров Центральной Азии." jsonLd={faqLd}>
 <style>
   .hero { padding: 5rem 3rem 4.5rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 3rem; max-width: 1120px; margin: 0 auto; }
   .hero h1 { font-family: var(--serif); font-size: clamp(3rem,5.5vw,5rem); font-weight: 500; line-height: 1.0; letter-spacing: -0.02em; }
@@ -179,6 +191,12 @@ const pubTypeLabels: Record<string,string> = { guide:'Руководство', a
     .knowledge-grid { grid-template-columns: 1fr; }
     .video-side { border-left: none; border-top: 1px solid var(--border); }
   }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-item summary { cursor: pointer; list-style: none; padding: 1.1rem 2rem 1.1rem 0; position: relative; font-family: var(--serif); font-size: 1.3rem; font-weight: 500; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; position: absolute; right: 0; top: 1rem; color: var(--accent); font-size: 1.4rem; }
+  .faq-item[open] summary::after { content: '−'; }
+  .faq-item p { padding: 0 0 1.25rem; color: var(--ink-muted); font-size: 0.95rem; }
 </style>
 
 <!-- HERO -->
@@ -405,6 +423,23 @@ const pubTypeLabels: Record<string,string> = { guide:'Руководство', a
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <div class="block reveal" id="faq">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Вопросы и ответы</span>
+        <h2 class="block-title">Частые <em>вопросы</em></h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      {faq.map(f => (
+        <details class="faq-item">
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
     </div>
   </div>
 
