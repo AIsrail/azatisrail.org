@@ -26,7 +26,7 @@ const person = {
   name: 'Азат Исраилов',
   alternateName: ['Azat Israilov', 'Исраилов Азат'],
   jobTitle: 'Консультант по фандрайзингу, тренер, бизнес-консультант',
-  description: 'Консультант, тренер и фандрайзер из Бишкека. 15+ лет в международном развитии, привлёк $2.3M финансирования, автор методологии «3 Дерева» и руководства «Как привлечь денежный грант».',
+  description: 'Консультант, тренер и фандрайзер из Бишкека. 18+ лет в международном развитии, привлёк $2.3M финансирования, автор методологии «3 Дерева» и руководства «Как привлечь денежный грант».',
   url: 'https://azatisrail.org/about/',
   image: 'https://azatisrail.org/og-image.jpg',
   email: 'mailto:azat@azatisrail.org',
@@ -40,8 +40,39 @@ const person = {
     'https://www.youtube.com/@connect4fund',
     'https://azatisrail.cc/',
     'https://github.com/AIsrail',
+    'https://www.facebook.com/1278314085365050',
+    'https://t.me/connect4pro_funds',
   ],
 };
+const breadcrumbItems = (() => {
+  const parts = Astro.url.pathname.split('/').filter(Boolean);
+  const items = [{ '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://azatisrail.org/' }];
+  const breadcrumbMap: Record<string, string> = {
+    'posts': 'Посты',
+    'publications': 'Публикации',
+    'book': 'Книга',
+    'funding': 'Финансирование',
+    'trainings': 'Тренинги',
+    'videos': 'Видео',
+    'courses': 'Курсы',
+    'about': 'Обо мне',
+    'contact': 'Контакт',
+    'support': 'Поддержать',
+  };
+  let url = 'https://azatisrail.org';
+  parts.forEach((part, idx) => {
+    url += '/' + part;
+    if (breadcrumbMap[part]) {
+      items.push({ '@type': 'ListItem', position: idx + 2, name: breadcrumbMap[part], item: url + '/' });
+    }
+  });
+  return items.length > 1 ? items : [];
+})();
+const breadcrumbLd = breadcrumbItems.length > 0 ? {
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+} : null;
+
 const graph = [
   person,
   {
@@ -52,6 +83,7 @@ const graph = [
     inLanguage: 'ru',
     publisher: { '@id': 'https://azatisrail.org/#person' },
   },
+  ...(breadcrumbLd ? [breadcrumbLd] : []),
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
 const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
@@ -197,6 +229,8 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
         <li><a href="https://linkedin.com/in/azat-israilov-6b515228/" target="_blank">LinkedIn</a></li>
         <li><a href="/contact">Связаться</a></li>
         <li><a href="/support">Поддержать</a></li>
+        <li><a href="https://fundan.cc" target="_blank" rel="noopener">Fundan</a></li>
+        <li><a href="https://resumelink.cc" target="_blank" rel="noopener">ResumeLink</a></li>
       </ul>
     </footer>
   </div>
