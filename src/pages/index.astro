@@ -302,24 +302,29 @@ const faqLd = {
   <div class="block reveal">
     <div class="block-head">
       <div class="block-head-left">
-        <span class="block-tag">Каталог</span>
-        <h2 class="block-title">Источники <em>финансирования</em></h2>
+        <span class="block-tag">Проекты</span>
+        <h2 class="block-title">Мои <em>проекты</em></h2>
       </div>
-      <a href="/funding" class="all-link">Весь каталог →</a>
     </div>
     <div class="grid3">
-      {funding.map(f => (
-        <a href={f.data.link ?? `/funding`} class="don-card" target={f.data.link ? '_blank' : undefined}>
-          <span class="don-cat">{categoryLabels[f.data.category] ?? f.data.category}</span>
-          <div class="don-name">{f.data.name}</div>
-          <p class="don-desc">{f.data.description}</p>
-          <div class="don-meta">
-            <span>{f.data.count}</span>
-            {f.data.geography && <span>{f.data.geography}</span>}
-          </div>
-        </a>
-      ))}
-      {funding.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Каталог в разработке.</p>}
+      <a href="https://fundan.cc" class="don-card" target="_blank" rel="noopener">
+        <span class="don-cat">ИИ-поиск</span>
+        <div class="don-name">fundan.cc</div>
+        <p class="don-desc">Подбор грантов, инвестиций и программ поддержки для бизнеса и НКО в Центральной Азии по базе из 700+ записей.</p>
+        <div class="don-meta"><span>fundan.cc</span><span>ЦА</span></div>
+      </a>
+      <a href="https://ratekit.org" class="don-card" target="_blank" rel="noopener">
+        <span class="don-cat">Калькуляторы</span>
+        <div class="don-name">ratekit.org</div>
+        <p class="don-desc">Бесплатные калькуляторы для предпринимателей и фрилансеров: ставка, ROI, точка безубыточности, runway, LTV:CAC и другие.</p>
+        <div class="don-meta"><span>ratekit.org</span><span>Без регистрации</span></div>
+      </a>
+      <a href="https://resumelink.cc" class="don-card" target="_blank" rel="noopener">
+        <span class="don-cat">Резюме</span>
+        <div class="don-name">resumelink.cc</div>
+        <p class="don-desc">AI превращает PDF или DOCX-резюме в интерактивный профиль: оценка по ATS, персональная ссылка и QR-код.</p>
+        <div class="don-meta"><span>resumelink.cc</span><span>Бесплатно</span></div>
+      </a>
     </div>
   </div>
 
