@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+
+const projects = [
+  {
+    name: 'ResumeLink',
+    url: 'resumelink.cc',
+    href: 'https://resumelink.cc/',
+    ru: 'Профессиональное резюме с помощью ИИ: оценка по ATS, персональная ссылка и QR-код.',
+    en: 'Professional résumés with AI: ATS score, a personal link and a QR code.',
+  },
+  {
+    name: 'RateKit',
+    url: 'ratekit.org',
+    href: 'https://ratekit.org/',
+    ru: 'Бизнес-калькуляторы для фаундеров и бизнесменов — и не только. Бесплатно, без регистрации: ставка, ROI, точка безубыточности, runway, LTV:CAC.',
+    en: 'Business calculators for founders and business owners, and beyond. Free, no sign-up: rates, ROI, break-even, runway, LTV:CAC and more.',
+  },
+  {
+    name: 'Fundan',
+    url: 'fundan.cc',
+    href: 'https://fundan.cc/',
+    ru: 'База данных грантов и инвестиций для Центральной Азии — региона, который становится привлекательным для инвесторов. ИИ подбирает возможности под вашу задачу.',
+    en: 'A database of grants and investment for Central Asia, a region that is becoming attractive to investors. AI matches opportunities to your project.',
+  },
+  {
+    name: 'connect4.pro',
+    url: 'connect4.pro',
+    href: 'https://connect4.pro/',
+    ru: 'Возможности и ресурсы для Центральной Азии: гранты, инвестиции, программы поддержки.',
+    en: 'Opportunities and resources for Central Asia: grants, investment, support programmes.',
+  },
+];
+---
+<Base title="Проекты — Азат Исраилов" description="Проекты Азата Исраилова: ResumeLink, RateKit, Fundan и connect4.pro. Русская и английская версии.">
+<style>
+  .page-header { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+  .page-tag { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; display: block; }
+  .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-desc { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-muted); max-width: 560px; line-height: 1.75; }
+
+  [hidden] { display: none !important; }
+  .lang-toggle { display: flex; gap: 6px; margin-top: 1.5rem; }
+  .lang-toggle button { background: none; border: 1px solid var(--border); border-radius: 3px; padding: 4px 12px; font-family: var(--sans); font-size: 0.75rem; color: var(--ink-muted); cursor: pointer; }
+  .lang-toggle button.on { border-color: var(--accent); color: var(--accent); background: rgba(122,79,42,0.07); }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--border); margin: 2.5rem 0 3rem; }
+  .proj-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 2rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.2s; }
+  .proj-card:nth-child(2n) { border-right: none; }
+  .proj-card:nth-last-child(-n+2) { border-bottom: none; }
+  .proj-card:hover { background: var(--bg-card); }
+  .proj-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.2; }
+  .proj-desc { font-size: 0.92rem; line-height: 1.7; color: var(--ink-muted); }
+  .proj-url { margin-top: auto; font-size: 0.8rem; color: var(--accent); }
+  .proj-card:hover .proj-url { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .proj-grid { grid-template-columns: 1fr; }
+    .proj-card { border-right: none; }
+    .proj-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .proj-card:last-child { border-bottom: none; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="page-header">
+    <span class="page-tag">Проекты · Projects</span>
+    <h1 class="page-title">Мои <em>проекты</em></h1>
+    <p class="page-desc lang-ru">Четыре проекта, которые я развиваю для предпринимателей, НКО и консультантов Центральной Азии.</p>
+    <p class="page-desc lang-en" hidden>Four projects I build for entrepreneurs, NGOs and consultants in Central Asia.</p>
+    <div class="lang-toggle">
+      <button type="button" class="on" data-lang="ru">RU</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <div class="proj-grid lang-ru">
+    {projects.map(p => (
+      <a href={p.href} class="proj-card" target="_blank" rel="noopener">
+        <span class="proj-name">{p.name}</span>
+        <span class="proj-desc">{p.ru}</span>
+        <span class="proj-url">{p.url} ↗</span>
+      </a>
+    ))}
+  </div>
+
+  <div class="proj-grid lang-en" hidden>
+    {projects.map(p => (
+      <a href={p.href} class="proj-card" target="_blank" rel="noopener">
+        <span class="proj-name">{p.name}</span>
+        <span class="proj-desc">{p.en}</span>
+        <span class="proj-url">{p.url} ↗</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      document.querySelectorAll<HTMLButtonElement>('.lang-toggle button').forEach(b => b.classList.toggle('on', b === btn));
+      document.querySelectorAll<HTMLElement>('.lang-ru').forEach(el => { el.hidden = lang !== 'ru'; });
+      document.querySelectorAll<HTMLElement>('.lang-en').forEach(el => { el.hidden = lang !== 'en'; });
+      document.documentElement.lang = lang === 'en' ? 'en' : 'ru';
+    });
+  });
+</script>
+</Base>
