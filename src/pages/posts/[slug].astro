@@ -60,6 +60,8 @@ const related = [...sameTag, ...others].slice(0, 3);
   .next-links { display: flex; flex-wrap: wrap; gap: 0.7rem 1.4rem; align-items: center; }
   .next-links a { color: #F0CB98; font-size: 0.9rem; }
   .next-links a.next-main { background: #D9A86F; color: #1A130E; padding: 0.7rem 1.3rem; text-decoration: none; font-weight: 500; }
+  .next-projects { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(217,168,111,0.3); font-size: 0.85rem; color: rgba(246,241,233,0.6); display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; align-items: center; }
+  .next-projects a { color: #F0CB98; }
 
   .related { padding: 2rem 0 4rem; border-top: 1px solid var(--border); }
   .related h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin-bottom: 1.25rem; }
@@ -107,6 +109,12 @@ const related = [...sameTag, ...others].slice(0, 3);
     <div class="next-links">
       <a href="/book/" class="next-main">О книге</a>
       <a href="https://fundan.cc/" target="_blank" rel="noopener">Найти финансирование на Fundan ↗</a>
+    </div>
+    <div class="next-projects">
+      <span>Другие проекты:</span>
+      <a href="https://connect4.pro/" target="_blank" rel="noopener">connect4.pro ↗</a>
+      <a href="https://ratekit.org/" target="_blank" rel="noopener">ratekit.org ↗</a>
+      <a href="https://resumelink.cc/" target="_blank" rel="noopener">resumelink.cc ↗</a>
     </div>
   </div>
 
