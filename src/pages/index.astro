@@ -30,243 +30,277 @@ const faqLd = {
 ---
 <Base title="Фандрайзинг, гранты и бизнес-консалтинг в Центральной Азии" description="Азат Исраилов — консультант по фандрайзингу из Бишкека: как получить грант для бизнеса и НКО, методология «3 Дерева», книга, курсы, тренинги и каталог 60+ доноров Центральной Азии." jsonLd={faqLd}>
 <style>
-  .hero { padding: 5rem 3rem 4.5rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 3rem; max-width: 1120px; margin: 0 auto; }
-  .hero h1 { font-family: var(--serif); font-size: clamp(3rem,5.5vw,5rem); font-weight: 500; line-height: 1.0; letter-spacing: -0.02em; }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero p { margin-top: 1.25rem; font-size: 1rem; color: var(--ink-muted); max-width: 400px; line-height: 1.75; }
-  .hero-actions { display: flex; flex-direction: column; gap: 0.75rem; flex-shrink: 0; }
+  /* HERO */
+  .hero { position: relative; overflow: hidden; isolation: isolate; background: radial-gradient(120% 90% at 85% 0%, #E2F5E8 0%, var(--bg) 60%); }
+  .aurora { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .aurora i { position: absolute; border-radius: 50%; filter: blur(70px); animation: drift 18s ease-in-out infinite alternate; will-change: transform; }
+  .aurora i:nth-child(1) { width: 420px; height: 420px; right: 6%; top: -80px; background: rgba(91,214,160,.45); }
+  .aurora i:nth-child(2) { width: 340px; height: 340px; left: -80px; bottom: -60px; background: rgba(255,176,32,.28); animation-duration: 22s; }
+  .aurora i:nth-child(3) { width: 260px; height: 260px; right: 38%; bottom: -40px; background: rgba(31,122,77,.2); animation-duration: 26s; }
+  @keyframes drift { to { transform: translate3d(60px, 40px, 0) scale(1.1); } }
+  .hero-in { max-width: 1120px; margin: 0 auto; padding: 4.5rem 3rem 5rem; display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.4rem 0.9rem; border-radius: 999px; background: #fff; border: 1px solid var(--border); font-size: 0.82rem; font-weight: 600; color: var(--accent); margin-bottom: 1.4rem; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-light); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; transform: scale(0.8); } }
+  .hero h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); line-height: 1.03; margin-bottom: 1.1rem; }
+  .hero-sub { font-size: 1.12rem; line-height: 1.65; color: var(--ink-muted); max-width: 33rem; margin-bottom: 1.8rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+  .hero-note { margin-top: 1rem; font-size: 0.86rem; color: var(--ink-muted); }
+  .hero-stage { position: relative; min-height: 470px; display: flex; align-items: center; justify-content: center; }
+  .book-wrap { position: relative; z-index: 2; animation: float 7s ease-in-out infinite; }
+  .book-wrap img { display: block; width: min(300px, 62vw); height: auto; border-radius: 6px; filter: drop-shadow(0 34px 44px rgba(15,42,30,.35)); transform: rotate(4deg); }
+  @keyframes float { 50% { translate: 0 -16px; rotate: -0.6deg; } }
+  .glass { position: absolute; z-index: 3; background: rgba(255,255,255,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.9); border-radius: 18px; box-shadow: var(--shadow-lg); padding: 0.85rem 1.1rem; }
+  .glass b { display: block; font-family: var(--serif); font-size: 1.7rem; font-weight: 800; line-height: 1; color: var(--accent); }
+  .glass span { font-size: 0.8rem; color: var(--ink-muted); }
+  .glass.g1 { left: -4%; top: 40px; animation: float 8s ease-in-out -2s infinite; }
+  .glass.g2 { right: -4%; top: 150px; animation: float 9s ease-in-out -4s infinite; }
+  .glass.g3 { left: 4%; bottom: 30px; animation: float 7.5s ease-in-out -1s infinite; }
+  .glass.g3 b { color: #C47F00; }
 
-  /* ARTICLE CARDS */
-  .art-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
-  .art-card:last-child { border-right: none; }
-  .art-card:hover { background: var(--bg-card); }
-  .art-tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-  .art-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.3; flex: 1; }
-  .art-excerpt { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.65; }
-  .art-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
-  .art-date { font-size: 0.75rem; color: var(--ink-muted); }
-  .art-arrow { font-size: 0.9rem; color: var(--accent-light); transition: transform 0.2s; }
-  .art-card:hover .art-arrow { transform: translate(3px,-3px); }
+  /* STATS */
+  .stats { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .stats-in { max-width: 1120px; margin: 0 auto; padding: 1.8rem 3rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat b { display: block; font-family: var(--serif); font-size: 2rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  .stat span { font-size: 0.9rem; color: var(--ink-muted); }
 
-  /* PUB CARDS */
-  .pub-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
-  .pub-card:last-child { border-right: none; }
-  .pub-card:hover { background: var(--bg-card); }
-  .pub-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
-  .pub-icon { font-size: 2rem; line-height: 1; }
-  .pub-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; line-height: 1.3; flex: 1; }
-  .pub-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.6; }
-  .pub-cta { font-size: 0.78rem; color: var(--accent); margin-top: 0.5rem; }
-  .pub-card-market { padding: 0; }
-  .pub-card-market .pub-type { padding: 1rem 1.25rem 0; }
-  .pub-card-market .pub-title { padding: 0 1.25rem; }
-  .pub-card-market .pub-desc { padding: 0 1.25rem; }
-  .pub-card-market .pub-cta { padding: 0 1.25rem 1.25rem; }
-  .pub-market-cover { position: relative; aspect-ratio: 4/3; background: var(--bg); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
-  .pub-market-cover img { max-height: 92%; max-width: 78%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(28,24,20,0.18)); transition: transform 0.25s; }
-  .pub-card-market:hover .pub-market-cover img { transform: scale(1.04); }
-  .pub-market-price { position: absolute; top: 0.85rem; right: 0.85rem; background: var(--ink); color: var(--bg); font-family: var(--serif); font-size: 0.95rem; font-weight: 500; padding: 4px 12px; }
+  /* INSIDE */
+  .cards4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 1.6rem; box-shadow: var(--shadow-sm); transition: transform 0.25s, box-shadow 0.25s; }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .card .ic { width: 46px; height: 46px; border-radius: 14px; background: var(--bg-card); color: var(--accent); display: grid; place-items: center; margin-bottom: 1rem; }
+  .card .ic svg { width: 24px; height: 24px; }
+  .card h3 { font-size: 1.12rem; margin-bottom: 0.4rem; line-height: 1.25; }
+  .card p { font-size: 0.93rem; color: var(--ink-muted); line-height: 1.6; }
 
-  /* FUNDING CARDS */
-  .don-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.22s; }
-  .don-card:last-child { border-right: none; }
-  .don-card:hover { background: var(--bg-card); }
-  .don-cat { display: inline-flex; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 10px; align-self: flex-start; }
-  .don-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.1; }
-  .don-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.6; flex: 1; }
-  .don-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--ink-muted); margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+  /* AUTHOR */
+  .author { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; align-items: center; }
+  .author img { width: 220px; height: 220px; object-fit: cover; border-radius: 28px; box-shadow: var(--shadow-lg); }
+  .author p { font-size: 1.05rem; color: var(--ink-muted); margin-bottom: 1rem; max-width: 40rem; }
 
-  /* AI BLOCK */
-  .ai-block { background: #1C1814; border-radius: 2px; padding: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-  .ai-tag { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.75rem; }
-  .ai-title { font-family: var(--serif); font-size: 2rem; font-weight: 500; line-height: 1.2; margin-bottom: 1rem; color: var(--bg); }
-  .ai-title em { font-style: italic; color: var(--accent-light); }
-  .ai-desc { font-size: 0.9rem; color: rgba(246,241,233,0.65); line-height: 1.75; margin-bottom: 1.5rem; }
-  .ai-soon { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: rgba(246,241,233,0.5); font-size: 0.82rem; letter-spacing: 0.05em; padding: 0.75rem 1.5rem; }
-  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-light); animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .ai-tiers { display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); }
-  .ai-tier { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
-  .ai-tier:last-child { border-bottom: none; }
-  .ai-tier-name { font-size: 0.85rem; color: rgba(246,241,233,0.75); }
-  .ai-tier-price { font-family: var(--serif); font-size: 1.1rem; color: var(--accent-light); }
+  /* GIFTS */
+  .gifts { background: #0F2A1E; color: #F1FAF4; position: relative; overflow: hidden; isolation: isolate; }
+  .gifts::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(50% 80% at 100% 0%, rgba(91,214,160,.28), transparent 70%), radial-gradient(40% 60% at 0% 100%, rgba(255,176,32,.16), transparent 70%); }
+  .gifts-in { max-width: 1120px; margin: 0 auto; padding: 4.5rem 3rem; }
+  .gifts h2 { color: #F1FAF4; }
+  .gifts h2 em { color: #5BD6A0; }
+  .gifts .block-tag { color: #8FE5BF; }
+  .gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+  .gift { border: 1px solid rgba(143,229,191,.35); background: rgba(241,250,244,.06); border-radius: 22px; padding: 1.8rem; animation: breathe 6s ease-in-out infinite; }
+  .gift:nth-child(2) { animation-delay: -3s; }
+  @keyframes breathe { 50% { translate: 0 -8px; } }
+  .gift .num { font-family: var(--serif); font-size: 3rem; font-weight: 800; line-height: 1; color: #5BD6A0; }
+  .gift h3 { font-size: 1.25rem; margin: 0.4rem 0; color: #fff; }
+  .gift p { color: rgba(241,250,244,.78); font-size: 0.97rem; }
+  .gifts-cta { margin-top: 2rem; }
 
-  /* VIDEO CARDS */
-  .vid-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: background 0.22s; border-right: 1px solid var(--border); overflow: hidden; }
-  .vid-card:last-child { border-right: none; }
-  .vid-card:hover { background: var(--bg-card); }
-  .vid-thumb { aspect-ratio: 16/9; background: #2A2218; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .vid-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .vid-play { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: absolute; transition: background 0.2s; }
-  .vid-card:hover .vid-play { background: var(--accent); border-color: var(--accent); }
-  .vid-play-icon { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 14px; border-color: transparent transparent transparent white; margin-left: 3px; }
-  .vid-duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.7rem; padding: 2px 6px; }
-  .vid-info { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-  .vid-meta { font-size: 0.72rem; color: var(--ink-muted); letter-spacing: 0.05em; }
-  .vid-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; line-height: 1.3; flex: 1; }
-  .vid-views { font-size: 0.75rem; color: var(--ink-muted); margin-top: auto; }
+  /* NEXT STEPS */
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .step { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; color: inherit; }
+  .step .tag { font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .step h3 { font-size: 1.3rem; line-height: 1.2; }
+  .step .more { margin-top: auto; padding-top: 0.6rem; color: var(--accent); font-weight: 600; font-size: 0.92rem; }
 
-  /* COURSE CARDS */
-  .course-card { padding: 1.75rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.22s; }
-  .course-card:last-child { border-right: none; }
-  .course-card:hover { background: var(--bg-card); }
-  .course-badge { display: inline-flex; align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; color: var(--ink-muted); }
-  .course-badge.featured { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-  .course-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; line-height: 1.3; flex: 1; }
-  .course-desc { font-size: 0.84rem; color: var(--ink-muted); line-height: 1.65; }
-  .course-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--ink-muted); padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: auto; align-items: center; }
-  .course-price { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); font-weight: 500; margin-left: auto; }
+  /* POSTS & PROJECTS */
+  .post-card { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; color: inherit; }
+  .post-card .tag { font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .post-card h3 { font-size: 1.15rem; line-height: 1.25; }
+  .post-card p { font-size: 0.93rem; color: var(--ink-muted); line-height: 1.6; }
+  .post-card .date { margin-top: auto; font-size: 0.82rem; color: var(--ink-muted); }
+  .cards4 .proj h3 { font-size: 1.2rem; }
 
-  @media (max-width: 768px) {
-    .hero { flex-direction: column; padding: 2rem 1.25rem; }
-  }
-
-  /* BOOK PROMO */
-  .book-promo {
-    background: var(--bg-card); border: 1px solid var(--border);
-    display: grid; grid-template-columns: 220px 1fr auto; gap: 2.5rem;
-    align-items: center; padding: 2.5rem;
-  }
-  .book-promo-cover { width: 100%; filter: drop-shadow(0 10px 24px rgba(28,24,20,0.16)); }
-  .book-promo-tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
-  .book-promo-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; line-height: 1.15; margin-bottom: 0.75rem; }
-  .book-promo-title em { font-style: italic; color: var(--accent); }
-  .book-promo-desc { font-size: 0.9rem; color: var(--ink-muted); line-height: 1.75; max-width: 480px; }
-  .book-promo-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
-  .book-promo-price { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; color: var(--ink); white-space: nowrap; }
-  @media (max-width: 900px) {
-    .book-promo { grid-template-columns: 1fr; text-align: center; padding: 2rem; }
-    .book-promo-cover { max-width: 160px; margin: 0 auto; }
-    .book-promo-right { align-items: center; }
-    .book-promo-desc { margin: 0 auto; }
-  }
-
-  /* ЗНАНИЯ & НАВЫКИ */
-  .knowledge-grid { border: 1px solid var(--border); }
-  .video-side { padding: 2rem; display: flex; flex-direction: column; }
-  .video-side-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .video-side-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
-  .video-side-list { display: flex; flex-direction: column; gap: 1rem; }
-  .vid-mini { display: flex; gap: 0.85rem; text-decoration: none; color: inherit; align-items: center; transition: opacity 0.2s; }
-  .vid-mini:hover { opacity: 0.8; }
-  .vid-mini-thumb { width: 92px; aspect-ratio: 16/9; background: #2A2218; position: relative; flex-shrink: 0; overflow: hidden; }
-  .vid-mini-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .vid-mini-play { position: absolute; inset: 0; margin: auto; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; }
-  .vid-mini-play::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 4px 0 4px 7px; border-color: transparent transparent transparent white; margin-left: 2px; }
-  .vid-mini-duration { position: absolute; bottom: 3px; right: 3px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.6rem; padding: 1px 4px; }
-  .vid-mini-info { min-width: 0; }
-  .vid-mini-title { font-size: 0.85rem; font-weight: 400; color: var(--ink); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .vid-mini-views { font-size: 0.72rem; color: var(--ink-muted); margin-top: 0.2rem; display: block; }
-
-  .faq-item { border-bottom: 1px solid var(--border); }
-  .faq-item summary { cursor: pointer; list-style: none; padding: 1.1rem 2rem 1.1rem 0; position: relative; font-family: var(--serif); font-size: 1.3rem; font-weight: 500; }
+  /* FAQ */
+  .faq-list { max-width: 760px; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+  .faq-item summary { cursor: pointer; font-family: var(--serif); font-weight: 700; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary::after { content: '+'; position: absolute; right: 0; top: 1rem; color: var(--accent); font-size: 1.4rem; }
+  .faq-item summary::after { content: '+'; color: var(--accent); font-size: 1.4rem; line-height: 1; }
   .faq-item[open] summary::after { content: '−'; }
-  .faq-item p { padding: 0 0 1.25rem; color: var(--ink-muted); font-size: 0.95rem; }
+  .faq-item p { margin-top: 0.7rem; color: var(--ink-muted); }
+
+  /* FINAL CTA */
+  .final { background: var(--grad); color: #fff; border-radius: 28px; padding: 3rem 2rem; text-align: center; margin: 1rem 0 4.5rem; position: relative; overflow: hidden; }
+  .final h2 { color: #fff; margin-bottom: 0.6rem; }
+  .final p { color: rgba(255,255,255,.88); margin-bottom: 1.4rem; }
+  .final .btn { background: #fff; border-color: #fff; color: var(--accent); }
+  .final .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  @media (max-width: 1000px) {
+    .hero-in { grid-template-columns: 1fr; padding-top: 3rem; }
+    .cards4 { grid-template-columns: repeat(2, 1fr); }
+    .stats-in { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .hero-in { padding: 2.5rem 1.25rem 3rem; }
+    .hero-stage { min-height: 400px; }
+    .glass.g1 { left: -2%; top: 10px; }
+    .glass.g2 { right: -2%; top: 120px; }
+    .glass.g3 { left: 0; bottom: 10px; }
+    .stats-in, .gifts-in { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .cards4, .cards3, .gift-grid { grid-template-columns: 1fr; }
+    .author { grid-template-columns: 1fr; }
+    .final { padding: 2.2rem 1.25rem; }
+  }
 </style>
 
-<!-- HERO -->
-<div style="border-bottom:1px solid var(--border); background: linear-gradient(170deg, var(--bg) 60%, var(--bg-card) 100%);">
-  <div class="hero">
+<!-- HERO: the book is the centre -->
+<section class="hero">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="hero-in">
     <div>
-      <p style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem">
-        <span style="width:2rem;height:1px;background:var(--accent);display:inline-block"></span>
-        Бишкек · Центральная Азия · Международный опыт
-      </p>
-      <h1>Фандрайзинг.<br>Бизнес.<br><em>Инструменты для роста.</em></h1>
-      <p style="margin-top:1.25rem">Практические материалы и курсы для НКО,<br>предпринимателей и консультантов ЦА.</p>
+      <span class="pill"><span class="dot"></span>Книга · 2-е издание · 2026</span>
+      <h1>Как привлечь <em>денежный грант</em></h1>
+      <p class="hero-sub">Практическое руководство автора с 18-летним опытом: методология «3 Дерева»®, шаблоны, ИИ-промпты и каталог из 47 грантодателей. Для бизнеса, стартапов и НКО Центральной Азии.</p>
+      <div class="hero-cta">
+        <a href="https://t.me/connect4faq/137" class="btn btn-accent" target="_blank" rel="noopener">Бесплатный путеводитель →</a>
+        <a href="/book" class="btn">Заказать книгу · 1 900 сом</a>
+      </div>
+      <p class="hero-note">Путеводитель по грантам и чек-лист — бесплатно, на русском и кыргызском.</p>
     </div>
-    <div class="hero-actions">
-      <a href="https://fundan.cc" target="_blank" rel="noopener" class="btn btn-accent">ИИ-поиск финансирования</a>
-      <a href="/about" class="btn btn-ghost">Обо мне →</a>
+    <div class="hero-stage">
+      <div class="glass g1"><b>232</b><span>страницы практики</span></div>
+      <div class="book-wrap"><img src="/book-cover.png" alt="Книга «Как привлечь денежный грант в бизнес, стартап или проект», 2-е издание" width="300" height="420" fetchpriority="high" /></div>
+      <div class="glass g2"><b>47</b><span>грантодателей в каталоге</span></div>
+      <div class="glass g3"><b>2 подарка</b><span>к каждой книге</span></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- BOOK PROMO -->
-<div class="wrap" style="padding-top:2rem">
-  <a href="/book" class="book-promo" style="text-decoration:none;color:inherit;display:grid">
-    <img src="/book-cover.png" alt="Как привлечь денежный грант" class="book-promo-cover" />
-    <div>
-      <p class="book-promo-tag">Книга · 2-е издание · Уже в продаже</p>
-      <h2 class="book-promo-title">Как привлечь <em>денежный грант</em><br>в бизнес или проект</h2>
-      <p class="book-promo-desc">Авторская методология «3 Дерева»®, гранты для бизнеса и НКО, работа с ИИ, каталог из 47 грантодателей и других источников финансирования. 232 страницы практики.</p>
-    </div>
-    <div class="book-promo-right">
-      <span class="book-promo-price">1 900 сом</span>
-      <span class="btn">Узнать подробнее →</span>
-    </div>
-  </a>
+<!-- TRUST -->
+<div class="stats">
+  <div class="stats-in">
+    <div class="stat"><b>18+ лет</b><span>опыта в фандрайзинге</span></div>
+    <div class="stat"><b>$2.3 млн</b><span>привлечено финансирования</span></div>
+    <div class="stat"><b>800+</b><span>экземпляров 1-го издания</span></div>
+    <div class="stat"><b>4 страны</b><span>ЦА, где книгу читают</span></div>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <!-- ① ПОСТЫ -->
-  <div class="block reveal">
+  <!-- INSIDE -->
+  <section class="block reveal">
     <div class="block-head">
       <div class="block-head-left">
-        <span class="block-tag">Свежее</span>
-        <h2 class="block-title">Статьи и <em>посты</em></h2>
+        <span class="block-tag">Что внутри</span>
+        <h2 class="block-title">Всё, чтобы подать <em>сильную заявку</em></h2>
       </div>
-      <a href="/posts" class="all-link">Все посты →</a>
+      <a href="/book" class="all-link">О книге →</a>
     </div>
-    <div class="grid3">
-      {posts.map(post => (
-        <a href={`/posts/${post.slug}`} class="art-card">
-          <span class="art-tag">{tagLabels[post.data.tag] ?? post.data.tag}</span>
-          <div class="art-title">{post.data.title}</div>
-          <p class="art-excerpt">{post.data.excerpt}</p>
-          <div class="art-foot">
-            <span class="art-date">{new Date(post.data.date).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'})}</span>
-            <span class="art-arrow">↗</span>
-          </div>
+    <div class="cards4">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"/><path d="M12 13c-3.5 0-6-2.5-6-6 3.5 0 6 2.5 6 6z"/><path d="M12 13c3.5 0 6-2.5 6-6-3.5 0-6 2.5-6 6z"/></svg></div>
+        <h3>Методология «3 Дерева»®</h3>
+        <p>Деревья проблем, целей и действий: как превратить идею в понятный проект.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div>
+        <h3>Проектирование по шагам</h3>
+        <p>От обоснования проблемы до бюджета, рисков и устойчивости. Чек-листы и шаблоны.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></div>
+        <h3>ИИ для фандрайзинга</h3>
+        <p>Инструменты и готовые промпты для проекта и бизнес-плана.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h3>Где искать финансирование</h3>
+        <p>47 грантодателей, источники для ЦА и возможности для Кыргызстана.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTHOR -->
+  <section class="block reveal" style="padding-top:0">
+    <div class="author">
+      <img src="/book-photos/author.webp" alt="Азат Исраилов, автор книги" width="220" height="220" loading="lazy" />
+      <div>
+        <span class="block-tag">Об авторе</span>
+        <h2 class="block-title" style="margin:0.3rem 0 1rem">Азат <em>Исраилов</em></h2>
+        <p>Консультант и тренер по фандрайзингу. Работаю с 2008 года, помогаю предпринимателям, НКО и консультантам Центральной Азии пройти путь от идеи до результата: проект — финансирование — реализация.</p>
+        <a href="/about" class="all-link">Подробнее об авторе →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GIFTS -->
+<section class="gifts">
+  <div class="gifts-in">
+    <span class="block-tag">Подарки к книге</span>
+    <h2 class="block-title" style="margin-top:0.3rem">Два бонуса <em>каждому читателю</em></h2>
+    <div class="gift-grid">
+      <div class="gift">
+        <div class="num">5</div>
+        <h3>возможностей финансирования</h3>
+        <p>ИИ на Fundan подберёт пять вариантов под вашу задачу. Платить не нужно: достаточно скрина чека за книгу.</p>
+      </div>
+      <div class="gift">
+        <div class="num">1</div>
+        <h3>проект с ИИ-помощником</h3>
+        <p>Разработайте проект от идеи до проектной заявки с помощью ИИ-помощника.</p>
+      </div>
+    </div>
+    <div class="gifts-cta"><a href="/book#gift" class="btn btn-accent">Как получить подарки →</a></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- NEXT STEPS -->
+  <section class="block reveal">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Что дальше</span>
+        <h2 class="block-title">Углубиться: <em>курс, тренинги, ИИ</em></h2>
+      </div>
+    </div>
+    <div class="cards3">
+      <a href="/courses" class="card step">
+        <span class="tag">Курс</span>
+        <h3>Фандрайзинг с нуля до гранта</h3>
+        <p>Полная система поиска и привлечения финансирования: от психологии доноров до выигрышной заявки.</p>
+        <span class="more">Смотреть курс →</span>
+      </a>
+      <a href="/trainings" class="card step">
+        <span class="tag">Тренинги</span>
+        <h3>Живые тренинги и практикумы</h3>
+        <p>Для команд и организаций: разработка проектов и подготовка заявок на практике.</p>
+        <span class="more">Расписание →</span>
+      </a>
+      <a href="/book#gift" class="card step">
+        <span class="tag">ИИ-помощник</span>
+        <h3>Разработка проекта с ИИ</h3>
+        <p>Помощник проведёт от идеи до проектной заявки. Первый проект — в подарок читателям книги.</p>
+        <span class="more">Как получить →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="block reveal" style="padding-top:0">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Блог</span>
+        <h2 class="block-title">Свежие <em>статьи</em></h2>
+      </div>
+      <a href="/posts" class="all-link">Все статьи →</a>
+    </div>
+    <div class="cards3">
+      {posts.map(p => (
+        <a href={`/posts/${p.slug}/`} class="card post-card">
+          <span class="tag">{tagLabels[p.data.tag] ?? p.data.tag}</span>
+          <h3>{p.data.title}</h3>
+          <p>{p.data.excerpt}</p>
+          <span class="date">{new Date(p.data.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
         </a>
       ))}
-      {posts.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся посты.</p>}
     </div>
-  </div>
+  </section>
 
-  <!-- ② ПУБЛИКАЦИИ -->
-  <div class="block reveal">
-    <div class="block-head">
-      <div class="block-head-left">
-        <span class="block-tag">Материалы</span>
-        <h2 class="block-title">Руководства и <em>публикации</em></h2>
-      </div>
-      <a href="/publications" class="all-link">Все публикации →</a>
-    </div>
-    <div class="grid3">
-      {publications.map(pub => {
-        const isInternal = pub.data.link?.startsWith('/');
-        const href = pub.data.link ?? `/publications/${pub.slug}`;
-        return pub.data.image ? (
-          <a href={href} class="pub-card pub-card-market" target={isInternal ? undefined : '_blank'}>
-            <div class="pub-market-cover">
-              <img src={pub.data.image} alt={pub.data.title} loading="lazy" />
-              {pub.data.price && <span class="pub-market-price">{pub.data.price}</span>}
-            </div>
-            <span class="pub-type">{pubTypeLabels[pub.data.type] ?? pub.data.type}</span>
-            <div class="pub-title">{pub.data.title}</div>
-            <p class="pub-desc">{pub.data.description}</p>
-            <span class="pub-cta">{pub.data.cta}</span>
-          </a>
-        ) : (
-          <a href={href} class="pub-card" target={isInternal ? undefined : '_blank'}>
-            <span class="pub-type">{pubTypeLabels[pub.data.type] ?? pub.data.type}</span>
-            <div class="pub-icon">{pub.data.icon}</div>
-            <div class="pub-title">{pub.data.title}</div>
-            <p class="pub-desc">{pub.data.description}</p>
-            <span class="pub-cta">{pub.data.cta}</span>
-          </a>
-        );
-      })}
-      {publications.length === 0 && <p style="padding:2rem;color:var(--ink-muted);grid-column:1/-1">Скоро появятся публикации.</p>}
-    </div>
-  </div>
-
-  <!-- ③ ФИНАНСИРОВАНИЕ -->
-  <div class="block reveal">
+  <!-- PROJECTS -->
+  <section class="block reveal" style="padding-top:0">
     <div class="block-head">
       <div class="block-head-left">
         <span class="block-tag">Проекты</span>
@@ -274,109 +308,16 @@ const faqLd = {
       </div>
       <a href="/projects" class="all-link">Все проекты →</a>
     </div>
-    <div class="grid3">
-      <a href="https://fundan.cc" class="don-card" target="_blank" rel="noopener">
-        <span class="don-cat">ИИ-поиск</span>
-        <div class="don-name">fundan.cc</div>
-        <p class="don-desc">Подбор грантов, инвестиций и программ поддержки для бизнеса и НКО в Центральной Азии по базе из 700+ записей.</p>
-        <div class="don-meta"><span>fundan.cc</span><span>ЦА</span></div>
-      </a>
-      <a href="https://ratekit.org" class="don-card" target="_blank" rel="noopener">
-        <span class="don-cat">Калькуляторы</span>
-        <div class="don-name">ratekit.org</div>
-        <p class="don-desc">Бесплатные калькуляторы для предпринимателей и фрилансеров: ставка, ROI, точка безубыточности, runway, LTV:CAC и другие.</p>
-        <div class="don-meta"><span>ratekit.org</span><span>Без регистрации</span></div>
-      </a>
-      <a href="https://resumelink.cc" class="don-card" target="_blank" rel="noopener">
-        <span class="don-cat">Резюме</span>
-        <div class="don-name">resumelink.cc</div>
-        <p class="don-desc">AI превращает PDF или DOCX-резюме в интерактивный профиль: оценка по ATS, персональная ссылка и QR-код.</p>
-        <div class="don-meta"><span>resumelink.cc</span><span>Бесплатно</span></div>
-      </a>
+    <div class="cards4">
+      <a href="https://fundan.cc/" target="_blank" rel="noopener" class="card post-card proj"><span class="tag">ИИ-поиск</span><h3>Fundan</h3><p>База грантов, инвестиций и программ поддержки для Центральной Азии.</p></a>
+      <a href="https://ratekit.org/" target="_blank" rel="noopener" class="card post-card proj"><span class="tag">Калькуляторы</span><h3>RateKit</h3><p>Бесплатные бизнес-калькуляторы для фаундеров и предпринимателей.</p></a>
+      <a href="https://resumelink.cc/" target="_blank" rel="noopener" class="card post-card proj"><span class="tag">Резюме</span><h3>ResumeLink</h3><p>ИИ превращает резюме в интерактивный профиль со ссылкой и QR-кодом.</p></a>
+      <a href="https://connect4.pro/" target="_blank" rel="noopener" class="card post-card proj"><span class="tag">Сообщество</span><h3>connect4.pro</h3><p>Возможности и ресурсы для Центральной Азии: гранты, инвестиции, программы.</p></a>
     </div>
-  </div>
+  </section>
 
-</div>
-
-<!-- ④ ИИ-ПОМОЩНИК -->
-<div class="wrap">
-  <div class="block reveal" id="ai">
-    <div class="block-head">
-      <div class="block-head-left">
-        <span class="block-tag">Уже работает</span>
-        <h2 class="block-title">ИИ-помощник по <em>финансированию</em></h2>
-      </div>
-    </div>
-    <div class="ai-block">
-      <div>
-        <p class="ai-tag">Умный поиск источников · Fundan</p>
-        <h3 class="ai-title">Найди финансирование<br><em>под свой проект</em></h3>
-        <p class="ai-desc">Опиши задачу — ИИ подберёт подходящие источники из базы доноров, инвесторов и программ. Базовый поиск бесплатно, разработка документов платно.</p>
-        <a href="https://fundan.cc" target="_blank" rel="noopener" class="ai-soon" style="text-decoration:none">
-          <div class="ai-dot"></div>
-          Открыть Fundan — fundan.cc →
-        </a>
-      </div>
-      <div class="ai-tiers">
-        <div class="ai-tier">
-          <span class="ai-tier-name">Поиск источников — «подходит / не подходит»</span>
-          <span class="ai-tier-price">Бесплатно</span>
-        </div>
-        <div class="ai-tier">
-          <span class="ai-tier-name">Разработка концепции проекта</span>
-          <span class="ai-tier-price">Платно</span>
-        </div>
-        <div class="ai-tier">
-          <span class="ai-tier-name">Подготовка основного документа</span>
-          <span class="ai-tier-price">Платно</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-
-  <!-- ⑤ ЗНАНИЯ & НАВЫКИ -->
-  <div class="block reveal">
-    <div class="block-head">
-      <div class="block-head-left">
-        <span class="block-tag">Обучение · 10+ тем</span>
-        <h2 class="block-title">Знания <em>&amp;</em> навыки</h2>
-      </div>
-    </div>
-    <div class="knowledge-grid">
-
-      <!-- VIDEOS (right, compact) -->
-      <div class="video-side">
-        <div class="video-side-head">
-          <span class="video-side-label">YouTube · разборы</span>
-          <a href="https://www.youtube.com/@connect4fund" class="all-link" target="_blank">Все видео →</a>
-        </div>
-        <div class="video-side-list">
-          {videos.slice(0,3).map(v => (
-            <a href={v.data.youtubeUrl} class="vid-mini" target="_blank">
-              <div class="vid-mini-thumb">
-                {v.data.youtubeId
-                  ? <img src={`https://img.youtube.com/vi/${v.data.youtubeId}/mqdefault.jpg`} alt={v.data.title} loading="lazy" />
-                  : null}
-                <div class="vid-mini-play"></div>
-                {v.data.duration && <span class="vid-mini-duration">{v.data.duration}</span>}
-              </div>
-              <div class="vid-mini-info">
-                <div class="vid-mini-title">{v.data.title}</div>
-                {v.data.views && <span class="vid-mini-views">{v.data.views} просмотров</span>}
-              </div>
-            </a>
-          ))}
-          {videos.length === 0 && <p style="color:var(--ink-muted);font-size:0.85rem">Скоро появятся видео.</p>}
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="block reveal" id="faq">
+  <!-- FAQ -->
+  <section class="block reveal" id="faq" style="padding-top:0">
     <div class="block-head">
       <div class="block-head-left">
         <span class="block-tag">Вопросы и ответы</span>
@@ -391,7 +332,13 @@ const faqLd = {
         </details>
       ))}
     </div>
-  </div>
+  </section>
 
+  <!-- FINAL CTA -->
+  <section class="final">
+    <h2>Начните с бесплатного путеводителя</h2>
+    <p>Путеводитель по грантам и чек-лист с ответами на частые вопросы, на русском и кыргызском.</p>
+    <a href="https://t.me/connect4faq/137" class="btn" target="_blank" rel="noopener">Получить путеводитель →</a>
+  </section>
 </div>
 </Base>
