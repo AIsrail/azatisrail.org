@@ -10,7 +10,8 @@ const courses = (await getCollection('courses')).slice(0,3);
 
 const tagLabels: Record<string,string> = {
   fundraising: 'Фандрайзинг', ngo: 'НКО', business: 'Бизнес',
-  acceleration: 'Акселерация', management: 'Управление', other: 'Разное'
+  acceleration: 'Акселерация', management: 'Управление', other: 'Разное',
+  book: 'Книга', about: 'Об авторе', fundan: 'Fundan'
 };
 const categoryLabels: Record<string,string> = { grants: 'Гранты', investors: 'Инвестиции', banks: 'Банки' };
 const pubTypeLabels: Record<string,string> = { guide:'Руководство', article:'Статья', pdf:'Гайд / PDF', tool:'Инструмент', book:'Книга' };

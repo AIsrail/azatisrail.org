@@ -8,8 +8,18 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
-const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг', ngo:'НКО', business:'Бизнес', acceleration:'Акселерация', management:'Управление', other:'Разное' };
+const { Content, headings } = await post.render();
+const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг', ngo:'НКО', business:'Бизнес', acceleration:'Акселерация', management:'Управление', other:'Разное', book:'Книга', about:'Об авторе', fundan:'Fundan' };
+
+const toc = headings.filter(h => h.depth === 2);
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const readMin = Math.max(1, Math.round(words / 180));
+
+const allPosts = (await getCollection('posts')).filter(p => p.slug !== post.slug);
+const byDate = (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+const sameTag = allPosts.filter(p => p.data.tag === post.data.tag).sort(byDate);
+const others = allPosts.filter(p => p.data.tag !== post.data.tag).sort(byDate);
+const related = [...sameTag, ...others].slice(0, 3);
 ---
 <Base title={post.data.title} description={post.data.excerpt} type="article" jsonLd={{ '@type': 'BlogPosting', headline: post.data.title, description: post.data.excerpt, datePublished: post.data.date, inLanguage: 'ru', url: `https://azatisrail.org/posts/${post.slug}/`, author: { '@id': 'https://azatisrail.org/#person' }, publisher: { '@id': 'https://azatisrail.org/#person' }, mainEntityOfPage: `https://azatisrail.org/posts/${post.slug}/`, image: `https://azatisrail.org/og-image.jpg` }}>
 <style>
@@ -19,8 +29,23 @@ const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг',
   .post-tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
   .post-title { font-family: var(--serif); font-size: clamp(1.8rem,4vw,3rem); font-weight: 500; line-height: 1.1; margin-bottom: 1rem; }
   .post-meta { font-size: 0.82rem; color: var(--ink-muted); }
-  .post-body { padding: 3rem 0; max-width: 720px; }
-  .post-body :global(h2) { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; margin: 2.5rem 0 1rem; }
+  .post-meta span + span::before { content: '·'; margin: 0 0.55rem; }
+
+  .post-lead { max-width: 720px; margin: 2rem 0 0; padding: 1.25rem 1.5rem; background: var(--bg-card); border-left: 3px solid var(--accent); }
+  .post-lead b { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; font-weight: 600; }
+  .post-lead p { font-family: var(--serif); font-size: 1.2rem; line-height: 1.5; }
+
+  .post-toc { max-width: 720px; margin: 1.5rem 0 0; border: 1px solid var(--border); padding: 1.25rem 1.5rem; }
+  .post-toc b { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.7rem; font-weight: 600; }
+  .post-toc ol { margin: 0; padding-left: 1.4rem; }
+  .post-toc li { font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.25rem; }
+  .post-toc a { color: var(--ink); text-decoration: none; }
+  .post-toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  .post-body { padding: 2.5rem 0 3rem; max-width: 720px; }
+  .post-body :global(img) { max-width: 100%; height: auto; display: block; margin: 1.5rem 0; }
+  .post-body :global(hr) { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .post-body :global(h2) { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; margin: 2.75rem 0 1rem; padding-top: 1.25rem; border-top: 2px solid var(--accent); scroll-margin-top: 5rem; }
   .post-body :global(h3) { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; margin: 2rem 0 0.75rem; }
   .post-body :global(p) { font-size: 1rem; line-height: 1.85; margin-bottom: 1.25rem; color: var(--ink); }
   .post-body :global(ul), .post-body :global(ol) { padding-left: 1.5rem; margin-bottom: 1.25rem; }
@@ -28,14 +53,76 @@ const tagLabels: Record<string,string> = { fundraising:'Фандрайзинг',
   .post-body :global(blockquote) { border-left: 3px solid var(--accent); padding-left: 1.5rem; margin: 2rem 0; font-family: var(--serif); font-size: 1.15rem; font-style: italic; color: var(--ink-muted); }
   .post-body :global(a) { color: var(--accent); text-decoration: underline; }
   .post-body :global(code) { background: var(--bg-card); padding: 2px 6px; font-size: 0.88em; border-radius: 3px; }
+
+  .next-step { max-width: 720px; margin: 0 0 3rem; padding: 1.75rem; background: #1A130E; color: #F6F1E9; }
+  .next-step b { display: block; font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .next-step p { font-size: 0.95rem; line-height: 1.7; color: rgba(246,241,233,0.75); margin-bottom: 1.1rem; }
+  .next-links { display: flex; flex-wrap: wrap; gap: 0.7rem 1.4rem; align-items: center; }
+  .next-links a { color: #F0CB98; font-size: 0.9rem; }
+  .next-links a.next-main { background: #D9A86F; color: #1A130E; padding: 0.7rem 1.3rem; text-decoration: none; font-weight: 500; }
+
+  .related { padding: 2rem 0 4rem; border-top: 1px solid var(--border); }
+  .related h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin-bottom: 1.25rem; }
+  .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
+  .rel-card { padding: 1.4rem; border-right: 1px solid var(--border); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.5rem; transition: background 0.2s; }
+  .rel-card:last-child { border-right: none; }
+  .rel-card:hover { background: var(--bg-card); }
+  .rel-tag { font-size: 0.66rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+  .rel-title { font-family: var(--serif); font-size: 1.1rem; line-height: 1.3; }
+  .rel-date { font-size: 0.78rem; color: var(--ink-muted); margin-top: auto; }
+
+  @media (max-width: 768px) {
+    .related-grid { grid-template-columns: 1fr; }
+    .rel-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .rel-card:last-child { border-bottom: none; }
+  }
 </style>
 <div class="wrap">
   <div class="post-header">
     <a href="/posts" class="post-back">← Все посты</a>
     <span class="post-tag">{tagLabels[post.data.tag] ?? post.data.tag}</span>
     <h1 class="post-title">{post.data.title}</h1>
-    <span class="post-meta">{new Date(post.data.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
+    <div class="post-meta">
+      <span>{new Date(post.data.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
+      <span>{readMin} мин чтения</span>
+    </div>
   </div>
+
+  <div class="post-lead"><b>Коротко</b><p>{post.data.excerpt}</p></div>
+
+  {toc.length >= 2 && (
+    <nav class="post-toc" aria-label="Оглавление">
+      <b>В этой статье</b>
+      <ol>
+        {toc.map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ol>
+    </nav>
+  )}
+
   <div class="post-body"><Content /></div>
+
+  <div class="next-step">
+    <b>Что дальше</b>
+    <p>Если тема вам близка, посмотрите книгу «Как привлечь денежный грант» или найдите подходящие возможности финансирования.</p>
+    <div class="next-links">
+      <a href="/book/" class="next-main">О книге</a>
+      <a href="https://fundan.cc/" target="_blank" rel="noopener">Найти финансирование на Fundan ↗</a>
+    </div>
+  </div>
+
+  {related.length > 0 && (
+    <section class="related">
+      <h2>Читайте также</h2>
+      <div class="related-grid">
+        {related.map(p => (
+          <a href={`/posts/${p.slug}/`} class="rel-card">
+            <span class="rel-tag">{tagLabels[p.data.tag] ?? p.data.tag}</span>
+            <span class="rel-title">{p.data.title}</span>
+            <span class="rel-date">{new Date(p.data.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </div>
 </Base>
