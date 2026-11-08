@@ -232,7 +232,7 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
       <a href="/courses">Курсы</a>
       <a href="/about">Обо мне</a>
     </nav>
-    <a href="https://t.me/connect4faq/137" class="nav-cta" target="_blank" rel="noopener">Бесплатный путеводитель</a>
+    <a href="https://t.me/connect4faq/137" class="nav-cta" data-track="guide_nav" target="_blank" rel="noopener">Бесплатный путеводитель</a>
     <button class="nav-burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
   </header>
   <div class="mobile-menu" id="mobile-menu" hidden>
@@ -245,7 +245,7 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     <a href="/funding">Финансирование</a>
     <a href="/videos">Видео</a>
     <a href="/about">Обо мне</a>
-    <a href="https://t.me/connect4faq/137" class="mm-cta" target="_blank" rel="noopener">Бесплатный путеводитель</a>
+    <a href="https://t.me/connect4faq/137" class="mm-cta" data-track="guide_mobile_menu" target="_blank" rel="noopener">Бесплатный путеводитель</a>
   </div>
 
   <main>
@@ -272,6 +272,12 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
   </div>
 
   <script>
+
+    document.addEventListener('click', (e) => {
+      const el = e.target.closest && e.target.closest('[data-track]');
+      if (!el || typeof window.gtag !== 'function') return;
+      window.gtag('event', el.getAttribute('data-track'), { link_url: el.getAttribute('href') || '', page_path: location.pathname });
+    });
     const burger = document.querySelector('.nav-burger');
     const menu = document.getElementById('mobile-menu');
     if (burger && menu) {
