@@ -1,0 +1,283 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const person = {
+  '@type': 'Person',
+  '@id': 'https://azatisrail.org/#person',
+  name: 'Azat Israilov',
+};
+---
+<Base lang="en" title="Fundraising consultant and funding tools for Central Asia" description="Azat Israilov: fundraising consultant and trainer from Bishkek. 18+ years, $2.3M raised. Consulting, trainings, Fundan, RateKit, ResumeLink and connect4.pro for clients, investors and partners in Central Asia." alternates={{ ru: 'https://azatisrail.org/', en: 'https://azatisrail.org/en/' }}>
+<style>
+  /* HERO */
+  .hero { position: relative; overflow: hidden; isolation: isolate; background: radial-gradient(120% 90% at 85% 0%, #E2F5E8 0%, var(--bg) 60%); }
+  .aurora { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .aurora i { position: absolute; border-radius: 50%; filter: blur(70px); animation: drift 18s ease-in-out infinite alternate; will-change: transform; }
+  .aurora i:nth-child(1) { width: 420px; height: 420px; right: 6%; top: -80px; background: rgba(91,214,160,.45); }
+  .aurora i:nth-child(2) { width: 340px; height: 340px; left: -80px; bottom: -60px; background: rgba(255,176,32,.28); animation-duration: 22s; }
+  .aurora i:nth-child(3) { width: 260px; height: 260px; right: 38%; bottom: -40px; background: rgba(31,122,77,.2); animation-duration: 26s; }
+  @keyframes drift { to { transform: translate3d(60px, 40px, 0) scale(1.1); } }
+  .hero-in { max-width: 1120px; margin: 0 auto; padding: 4.5rem 3rem 5rem; display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.4rem 0.9rem; border-radius: 999px; background: #fff; border: 1px solid var(--border); font-size: 0.82rem; font-weight: 600; color: var(--accent); margin-bottom: 1.4rem; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-light); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; transform: scale(0.8); } }
+  .hero h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); line-height: 1.03; margin-bottom: 1.1rem; }
+  .hero-sub { font-size: 1.12rem; line-height: 1.65; color: var(--ink-muted); max-width: 33rem; margin-bottom: 1.8rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+  .hero-note { margin-top: 1rem; font-size: 0.86rem; color: var(--ink-muted); }
+  .hero-stage { position: relative; min-height: 470px; display: flex; align-items: center; justify-content: center; }
+  .book-wrap { position: relative; z-index: 2; animation: float 7s ease-in-out infinite; }
+  .book-wrap img { display: block; width: min(300px, 62vw); height: auto; border-radius: 6px; filter: drop-shadow(0 34px 44px rgba(15,42,30,.35)); transform: rotate(4deg); }
+  @keyframes float { 50% { translate: 0 -16px; rotate: -0.6deg; } }
+  .glass { position: absolute; z-index: 3; background: rgba(255,255,255,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.9); border-radius: 18px; box-shadow: var(--shadow-lg); padding: 0.85rem 1.1rem; }
+  .glass b { display: block; font-family: var(--serif); font-size: 1.7rem; font-weight: 800; line-height: 1; color: var(--accent); }
+  .glass span { font-size: 0.8rem; color: var(--ink-muted); }
+  .glass.g1 { left: -4%; top: 40px; animation: float 8s ease-in-out -2s infinite; }
+  .glass.g2 { right: -4%; top: 150px; animation: float 9s ease-in-out -4s infinite; }
+  .glass.g3 { left: 4%; bottom: 30px; animation: float 7.5s ease-in-out -1s infinite; }
+  .glass.g3 b { color: #C47F00; }
+
+  /* STATS */
+  .stats { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .stats-in { max-width: 1120px; margin: 0 auto; padding: 1.8rem 3rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat b { display: block; font-family: var(--serif); font-size: 2rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  .stat span { font-size: 0.9rem; color: var(--ink-muted); }
+
+  /* INSIDE */
+  .cards4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 1.6rem; box-shadow: var(--shadow-sm); transition: transform 0.25s, box-shadow 0.25s; }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .card .ic { width: 46px; height: 46px; border-radius: 14px; background: var(--bg-card); color: var(--accent); display: grid; place-items: center; margin-bottom: 1rem; }
+  .card .ic svg { width: 24px; height: 24px; }
+  .card h3 { font-size: 1.12rem; margin-bottom: 0.4rem; line-height: 1.25; }
+  .card p { font-size: 0.93rem; color: var(--ink-muted); line-height: 1.6; }
+
+  /* AUTHOR */
+  .author { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; align-items: center; }
+  .author img { width: 220px; height: 220px; object-fit: cover; border-radius: 28px; box-shadow: var(--shadow-lg); }
+  .author p { font-size: 1.05rem; color: var(--ink-muted); margin-bottom: 1rem; max-width: 40rem; }
+
+  /* GIFTS */
+  .gifts { background: #0F2A1E; color: #F1FAF4; position: relative; overflow: hidden; isolation: isolate; }
+  .gifts::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(50% 80% at 100% 0%, rgba(91,214,160,.28), transparent 70%), radial-gradient(40% 60% at 0% 100%, rgba(255,176,32,.16), transparent 70%); }
+  .gifts-in { max-width: 1120px; margin: 0 auto; padding: 4.5rem 3rem; }
+  .gifts h2 { color: #F1FAF4; }
+  .gifts h2 em { color: #5BD6A0; }
+  .gifts .block-tag { color: #8FE5BF; }
+  .gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+  .gift { border: 1px solid rgba(143,229,191,.35); background: rgba(241,250,244,.06); border-radius: 22px; padding: 1.8rem; animation: breathe 6s ease-in-out infinite; }
+  .gift:nth-child(2) { animation-delay: -3s; }
+  @keyframes breathe { 50% { translate: 0 -8px; } }
+  .gift .num { font-family: var(--serif); font-size: 3rem; font-weight: 800; line-height: 1; color: #5BD6A0; }
+  .gift h3 { font-size: 1.25rem; margin: 0.4rem 0; color: #fff; }
+  .gift p { color: rgba(241,250,244,.78); font-size: 0.97rem; }
+  .gifts-cta { margin-top: 2rem; }
+
+  /* NEXT STEPS */
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .step { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; color: inherit; }
+  .step .tag { font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .step h3 { font-size: 1.3rem; line-height: 1.2; }
+  .step .more { margin-top: auto; padding-top: 0.6rem; color: var(--accent); font-weight: 600; font-size: 0.92rem; }
+
+  /* POSTS & PROJECTS */
+  .post-card { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; color: inherit; }
+  .post-card .tag { font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .post-card h3 { font-size: 1.15rem; line-height: 1.25; }
+  .post-card p { font-size: 0.93rem; color: var(--ink-muted); line-height: 1.6; }
+  .post-card .date { margin-top: auto; font-size: 0.82rem; color: var(--ink-muted); }
+  .cards4 .proj h3 { font-size: 1.2rem; }
+
+  /* FAQ */
+  .faq-list { max-width: 760px; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+  .faq-item summary { cursor: pointer; font-family: var(--serif); font-weight: 700; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; color: var(--accent); font-size: 1.4rem; line-height: 1; }
+  .faq-item[open] summary::after { content: '−'; }
+  .faq-item p { margin-top: 0.7rem; color: var(--ink-muted); }
+
+  /* FINAL CTA */
+  .final { background: var(--grad); color: #fff; border-radius: 28px; padding: 3rem 2rem; text-align: center; margin: 1rem 0 4.5rem; position: relative; overflow: hidden; }
+  .final h2 { color: #fff; margin-bottom: 0.6rem; }
+  .final p { color: rgba(255,255,255,.88); margin-bottom: 1.4rem; }
+  .final .btn { background: #fff; border-color: #fff; color: var(--accent); }
+  .final .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  @media (max-width: 1000px) {
+    .hero-in { grid-template-columns: 1fr; padding-top: 3rem; }
+    .cards4 { grid-template-columns: repeat(2, 1fr); }
+    .stats-in { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .hero-in { padding: 2.5rem 1.25rem 3rem; }
+    .hero-stage { min-height: 400px; }
+    .glass.g1 { left: -2%; top: 10px; }
+    .glass.g2 { right: -2%; top: 120px; }
+    .glass.g3 { left: 0; bottom: 10px; }
+    .stats-in, .gifts-in { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .cards4, .cards3, .gift-grid { grid-template-columns: 1fr; }
+    .author { grid-template-columns: 1fr; }
+    .final { padding: 2.2rem 1.25rem; }
+  }
+
+  .photo-wrap { position: relative; z-index: 2; animation: float 7s ease-in-out infinite; }
+  .photo-wrap img { display: block; width: min(330px, 70vw); height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow-lg); border: 6px solid #fff; transform: rotate(-3deg); }
+  .gift-grid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px) { .gift-grid.three { grid-template-columns: 1fr; } }
+  .bookband { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow-sm); }
+  .bookband img { width: 180px; height: auto; border-radius: 6px; filter: drop-shadow(0 18px 22px rgba(15,42,30,.3)); }
+  .bookband h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .bookband p { color: var(--ink-muted); margin-bottom: 0.8rem; max-width: 40rem; }
+  .bookband .note { background: var(--bg-card); border-radius: 14px; padding: 0.8rem 1rem; color: var(--ink); font-size: 0.95rem; }
+  .bookband .links { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; align-items: center; margin-top: 1rem; }
+  .contact-cards { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-top: 1.4rem; }
+  .final .contact-line { margin-top: 1.2rem; font-size: 0.95rem; color: rgba(255,255,255,.9); }
+  .final .contact-line a { color: #fff; }
+  @media (max-width: 768px) { .bookband { grid-template-columns: 1fr; padding: 1.4rem; } .bookband img { width: 150px; } }
+</style>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="hero-in">
+    <div>
+      <span class="pill"><span class="dot"></span>Bishkek · Central Asia</span>
+      <h1>Funding for Central Asia: <em>from idea to result</em></h1>
+      <p class="hero-sub">I'm Azat Israilov, a fundraising consultant and trainer from Bishkek. For 18+ years I have helped NGOs, entrepreneurs and consultants design projects and win funding. $2.3M raised so far.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-accent" data-track="contact_hero_en">Get in touch</a>
+        <a href="#projects" class="btn" data-track="projects_hero_en">See my projects</a>
+      </div>
+      <p class="hero-note">Consulting, trainings, research tools and partnerships in Kyrgyzstan and across Central Asia.</p>
+    </div>
+    <div class="hero-stage">
+      <div class="glass g1"><b>18+</b><span>years in fundraising</span></div>
+      <div class="photo-wrap"><img src="/book-photos/author.webp" alt="Azat Israilov, fundraising consultant and trainer" width="500" height="500" fetchpriority="high" /></div>
+      <div class="glass g2"><b>$2.3M</b><span>funding raised</span></div>
+      <div class="glass g3"><b>4</b><span>platforms built</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-in">
+    <div class="stat"><b>18+ years</b><span>in fundraising and project management</span></div>
+    <div class="stat"><b>$2.3M</b><span>funding raised for social and business projects</span></div>
+    <div class="stat"><b>800+</b><span>copies of the 1st edition of the book</span></div>
+    <div class="stat"><b>4 countries</b><span>in Central Asia where it is read</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SERVICES -->
+  <section class="block reveal" id="services">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">What I do</span>
+        <h2 class="block-title">Practical help to find and <em>win funding</em></h2>
+      </div>
+    </div>
+    <div class="cards4">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div>
+        <h3>Fundraising consulting</h3>
+        <p>Project design, grant proposals and business plans for NGOs, startups and companies.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5z"/><path d="M7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5"/></svg></div>
+        <h3>Trainings and course</h3>
+        <p>Hands-on trainings and the online course “Fundraising from Scratch to a Grant”. The course ran its 4th cohort this year.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h3>Funding research</h3>
+        <p>Fundan: a searchable database of grants, investment and support programs for Central Asia.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2"/></svg></div>
+        <h3>Business tools</h3>
+        <p>RateKit calculators for founders and ResumeLink, an AI tool for professional résumés.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PARTNERS AND INVESTORS -->
+<section class="gifts" id="partners">
+  <div class="gifts-in">
+    <span class="block-tag">Clients, investors and partners</span>
+    <h2 class="block-title" style="margin-top:0.3rem">Central Asia is becoming <em>attractive to investors</em></h2>
+    <p style="color:rgba(241,250,244,.8);max-width:46rem;margin-top:0.8rem">Fundan and connect4.pro follow grants, investment and support programs across the region. Whether you are looking for help with a project or for opportunities and partners in Central Asia, let's talk.</p>
+    <div class="gift-grid three">
+      <div class="gift">
+        <h3>Clients</h3>
+        <p>NGOs, businesses and startups: project design, proposals, trainings and coaching.</p>
+      </div>
+      <div class="gift">
+        <h3>Investors and donors</h3>
+        <p>Local expertise and tools to find and evaluate opportunities in Kyrgyzstan and across Central Asia.</p>
+      </div>
+      <div class="gift">
+        <h3>Partners</h3>
+        <p>Joint trainings and programs, content and distribution, and group orders of the book.</p>
+      </div>
+    </div>
+    <div class="gifts-cta"><a href="#contact" class="btn btn-accent" data-track="contact_partners_en">Start a conversation →</a></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- PROJECTS -->
+  <section class="block reveal" id="projects">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Projects</span>
+        <h2 class="block-title">Platforms I <em>built</em></h2>
+      </div>
+    </div>
+    <div class="cards4">
+      <a href="https://fundan.cc/" target="_blank" rel="noopener" class="card post-card proj" data-track="fundan_en"><span class="tag">AI search</span><h3>Fundan</h3><p>A database of grants, investment and support programs for Central Asia, a region that is becoming attractive to investors. AI search helps you find options for your project.</p></a>
+      <a href="https://ratekit.org/" target="_blank" rel="noopener" class="card post-card proj" data-track="ratekit_en"><span class="tag">Calculators</span><h3>RateKit</h3><p>Free business calculators for founders and entrepreneurs: rates, ROI, break-even, runway, LTV:CAC. No sign-up.</p></a>
+      <a href="https://resumelink.cc/" target="_blank" rel="noopener" class="card post-card proj" data-track="resumelink_en"><span class="tag">Résumés</span><h3>ResumeLink</h3><p>AI turns a PDF or DOCX résumé into an interactive profile: ATS score, a personal link and a QR code.</p></a>
+      <a href="https://connect4.pro/" target="_blank" rel="noopener" class="card post-card proj" data-track="connect4pro_en"><span class="tag">Community</span><h3>connect4.pro</h3><p>Opportunities and resources for Central Asia: grants, investment, support programs and trainings.</p></a>
+    </div>
+  </section>
+
+  <!-- BOOK -->
+  <section class="block reveal" id="book" style="padding-top:0">
+    <div class="block-head">
+      <div class="block-head-left">
+        <span class="block-tag">Publication</span>
+        <h2 class="block-title">My <em>book</em></h2>
+      </div>
+    </div>
+    <div class="bookband">
+      <img src="/book-cover.png" alt="Book cover: How to Attract a Cash Grant, 2nd edition" width="180" height="272" loading="lazy" />
+      <div>
+        <h3>How to Attract a Cash Grant</h3>
+        <p>2nd edition, 2026. 232 pages, in Russian. A practical guide to project design and finding funding: the “3 Trees”® method, AI prompts, templates and a catalog of 47 donors.</p>
+        <div class="note"><b>Group orders of 50+ copies:</b> an English edition can be published for your organization.</div>
+        <div class="links">
+          <a href="mailto:azat@azatisrail.org?subject=Book%20group%20order" class="btn btn-accent" data-track="book_group_order_en">Ask about a group order</a>
+          <a href="/book/" class="all-link" data-track="book_ru_page_en">Russian edition page →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="final" id="contact">
+    <h2>Let's talk</h2>
+    <p>Tell me about your project, organization or idea for a partnership.</p>
+    <div class="contact-cards">
+      <a href="mailto:azat@azatisrail.org" class="btn" data-track="email_en">azat@azatisrail.org</a>
+      <a href="https://wa.me/996702271827" class="btn" target="_blank" rel="noopener" data-track="whatsapp_en">WhatsApp +996 702 27 18 27</a>
+      <a href="https://linkedin.com/in/azat-israilov-6b515228/" class="btn" target="_blank" rel="noopener" data-track="linkedin_en">LinkedIn</a>
+    </div>
+  </section>
+</div>
+</Base>

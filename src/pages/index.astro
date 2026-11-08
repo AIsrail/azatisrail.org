@@ -28,7 +28,7 @@ const faqLd = {
   mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 ---
-<Base title="Фандрайзинг, гранты и бизнес-консалтинг в Центральной Азии" description="Азат Исраилов — консультант по фандрайзингу из Бишкека: как получить грант для бизнеса и НКО, методология «3 Дерева», книга, курсы, тренинги и каталог 60+ доноров Центральной Азии." jsonLd={faqLd}>
+<Base alternates={{ ru: 'https://azatisrail.org/', en: 'https://azatisrail.org/en/' }} title="Фандрайзинг, гранты и бизнес-консалтинг в Центральной Азии" description="Азат Исраилов — консультант по фандрайзингу из Бишкека: как получить грант для бизнеса и НКО, методология «3 Дерева», книга, курсы, тренинги и каталог 60+ доноров Центральной Азии." jsonLd={faqLd}>
 <style>
   /* HERO */
   .hero { position: relative; overflow: hidden; isolation: isolate; background: radial-gradient(120% 90% at 85% 0%, #E2F5E8 0%, var(--bg) 60%); }

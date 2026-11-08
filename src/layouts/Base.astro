@@ -6,6 +6,8 @@ export interface Props {
   type?: 'website' | 'article' | 'profile' | 'book';
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  lang?: 'ru' | 'en';
+  alternates?: { ru?: string; en?: string };
 }
 const {
   title,
@@ -14,12 +16,28 @@ const {
   type = 'website',
   noindex = false,
   jsonLd,
+  lang = 'ru',
+  alternates,
 } = Astro.props;
 const site = Astro.site ?? new URL('https://azatisrail.org');
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(path, site).href;
 const imageUrl = new URL(image, site).href;
-const fullTitle = `${title} — Азат Исраилов`;
+const fullTitle = lang === 'en' ? `${title} — Azat Israilov` : `${title} — Азат Исраилов`;
+
+const navRu = [['/book', 'Книга'], ['/posts', 'Блог'], ['/projects', 'Проекты'], ['/trainings', 'Тренинги'], ['/courses', 'Курсы'], ['/about', 'Обо мне']];
+const navRuMobileExtra = [['/publications', 'Публикации'], ['/funding', 'Финансирование'], ['/videos', 'Видео']];
+const navEn = [['#services', 'What I do'], ['#partners', 'Partners & investors'], ['#projects', 'Projects'], ['#book', 'The book'], ['#contact', 'Contact']];
+const nav = lang === 'en' ? navEn : navRu;
+const mobileNav = lang === 'en' ? navEn : [...navRu.slice(0, 5), ...navRuMobileExtra, navRu[5]];
+const cta = lang === 'en'
+  ? { href: '#contact', label: 'Get in touch', external: false, track: 'contact_nav_en' }
+  : { href: 'https://t.me/connect4faq/137', label: 'Бесплатный путеводитель', external: true, track: 'guide_nav' };
+const switchLang = lang === 'en' ? { href: '/', label: 'RU', title: 'Русская версия' } : { href: '/en/', label: 'EN', title: 'English version' };
+const footerLinks = lang === 'en'
+  ? [['Projects', 'https://azatisrail.org/#projects'], ['Fundan', 'https://fundan.cc'], ['RateKit', 'https://ratekit.org'], ['ResumeLink', 'https://resumelink.cc'], ['LinkedIn', 'https://linkedin.com/in/azat-israilov-6b515228/'], ['YouTube', 'https://www.youtube.com/@connect4fund']]
+  : [['Обо мне', '/about'], ['Проекты', '/projects'], ['Публикации', '/publications'], ['Финансирование', '/funding'], ['Видео', '/videos'], ['YouTube', 'https://www.youtube.com/@connect4fund'], ['LinkedIn', 'https://linkedin.com/in/azat-israilov-6b515228/'], ['Связаться', '/contact'], ['Поддержать', '/support'], ['Fundan', 'https://fundan.cc'], ['ResumeLink', 'https://resumelink.cc']];
+const footerCopy = lang === 'en' ? '© 2026 · Azat Israilov · azatisrail.org' : '© 2026 · Азат Исраилов · azatisrail.org';
 const person = {
   '@type': 'Person',
   '@id': 'https://azatisrail.org/#person',
@@ -80,7 +98,7 @@ const graph = [
     '@id': 'https://azatisrail.org/#website',
     url: 'https://azatisrail.org/',
     name: 'Азат Исраилов — фандрайзинг, гранты, бизнес',
-    inLanguage: 'ru',
+    inLanguage: lang,
     publisher: { '@id': 'https://azatisrail.org/#person' },
   },
   ...(breadcrumbLd ? [breadcrumbLd] : []),
@@ -89,18 +107,21 @@ const graph = [
 const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 ---
 <!DOCTYPE html>
-<html lang="ru">
+<html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  {alternates?.ru && <link rel="alternate" hreflang="ru" href={alternates.ru} />}
+  {alternates?.en && <link rel="alternate" hreflang="en" href={alternates.en} />}
+  {alternates?.ru && <link rel="alternate" hreflang="x-default" href={alternates.ru} />}
   <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
   <meta name="author" content="Азат Исраилов" />
   <meta property="og:type" content={type} />
   <meta property="og:site_name" content="Азат Исраилов" />
-  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ru_RU'} />
   <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
@@ -158,6 +179,8 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--accent); background: var(--bg-card); }
     .nav-cta { background: var(--grad); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.86rem; padding: 0.62rem 1.15rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 16px -6px rgba(31,122,77,.6); transition: transform 0.18s, box-shadow 0.18s; }
     .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -6px rgba(31,122,77,.7); }
+    .lang-link { font-size: 0.82rem; font-weight: 600; color: var(--ink-muted); text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 0.7rem; background: #fff; }
+    .lang-link:hover { color: var(--accent); border-color: var(--accent); }
     .nav-burger { display: none; margin-left: auto; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: #fff; cursor: pointer; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
     .nav-burger span { display: block; width: 18px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
     .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -206,7 +229,7 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     .all-link:hover { text-decoration: underline; }
 
     @media (max-width: 1000px) {
-      .nav-links, .nav-cta { display: none; }
+      .nav-links, .nav-cta, .lang-link { display: none; }
       .nav-burger { display: flex; }
     }
     @media (max-width: 768px) {
@@ -223,29 +246,18 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
 </head>
 <body>
   <header class="site-nav">
-    <a href="/" class="nav-logo">Азат Исраилов</a>
-    <nav class="nav-links" aria-label="Основное меню">
-      <a href="/book">Книга</a>
-      <a href="/posts">Блог</a>
-      <a href="/projects">Проекты</a>
-      <a href="/trainings">Тренинги</a>
-      <a href="/courses">Курсы</a>
-      <a href="/about">Обо мне</a>
+    <a href={lang === 'en' ? '/en/' : '/'} class="nav-logo">{lang === 'en' ? 'Azat Israilov' : 'Азат Исраилов'}</a>
+    <nav class="nav-links" aria-label={lang === 'en' ? 'Main menu' : 'Основное меню'}>
+      {nav.map(([href, label]) => <a href={href}>{label}</a>)}
     </nav>
-    <a href="https://t.me/connect4faq/137" class="nav-cta" data-track="guide_nav" target="_blank" rel="noopener">Бесплатный путеводитель</a>
-    <button class="nav-burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+    <a href={switchLang.href} class="lang-link" title={switchLang.title} hreflang={switchLang.label.toLowerCase()}>{switchLang.label}</a>
+    <a href={cta.href} class="nav-cta" data-track={cta.track} target={cta.external ? '_blank' : undefined} rel={cta.external ? 'noopener' : undefined}>{cta.label}</a>
+    <button class="nav-burger" type="button" aria-label={lang === 'en' ? 'Open menu' : 'Открыть меню'} aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
   </header>
   <div class="mobile-menu" id="mobile-menu" hidden>
-    <a href="/book">Книга</a>
-    <a href="/posts">Блог</a>
-    <a href="/projects">Проекты</a>
-    <a href="/trainings">Тренинги</a>
-    <a href="/courses">Курсы</a>
-    <a href="/publications">Публикации</a>
-    <a href="/funding">Финансирование</a>
-    <a href="/videos">Видео</a>
-    <a href="/about">Обо мне</a>
-    <a href="https://t.me/connect4faq/137" class="mm-cta" data-track="guide_mobile_menu" target="_blank" rel="noopener">Бесплатный путеводитель</a>
+    {mobileNav.map(([href, label]) => <a href={href}>{label}</a>)}
+    <a href={switchLang.href} hreflang={switchLang.label.toLowerCase()}>{switchLang.title}</a>
+    <a href={cta.href} class="mm-cta" data-track={cta.track + '_mobile'} target={cta.external ? '_blank' : undefined} rel={cta.external ? 'noopener' : undefined}>{cta.label}</a>
   </div>
 
   <main>
@@ -254,19 +266,9 @@ const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
 
   <div class="site-footer-wrap">
     <footer class="site-footer">
-      <span class="footer-copy">© 2026 · Азат Исраилов · azatisrail.org</span>
+      <span class="footer-copy">{footerCopy}</span>
       <ul class="footer-links">
-        <li><a href="/about">Обо мне</a></li>
-        <li><a href="/projects">Проекты</a></li>
-        <li><a href="/publications">Публикации</a></li>
-        <li><a href="/funding">Финансирование</a></li>
-        <li><a href="/videos">Видео</a></li>
-        <li><a href="https://www.youtube.com/@connect4fund" target="_blank">YouTube</a></li>
-        <li><a href="https://linkedin.com/in/azat-israilov-6b515228/" target="_blank">LinkedIn</a></li>
-        <li><a href="/contact">Связаться</a></li>
-        <li><a href="/support">Поддержать</a></li>
-        <li><a href="https://fundan.cc" target="_blank" rel="noopener">Fundan</a></li>
-        <li><a href="https://resumelink.cc" target="_blank" rel="noopener">ResumeLink</a></li>
+        {footerLinks.map(([label, href]) => <li><a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener' : undefined}>{label}</a></li>)}
       </ul>
     </footer>
   </div>
