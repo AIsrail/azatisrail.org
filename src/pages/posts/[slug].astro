@@ -31,6 +31,8 @@ const related = [...sameTag, ...others].slice(0, 3);
   .post-meta { font-size: 0.82rem; color: var(--ink-muted); }
   .post-meta span + span::before { content: '·'; margin: 0 0.55rem; }
 
+  .post-figure { margin: 2rem 0 0; max-width: 960px; }
+  .post-figure img { display: block; width: 100%; height: auto; border-radius: 20px; border: 1px solid var(--border); }
   .post-lead { max-width: 720px; margin: 2rem 0 0; padding: 1.25rem 1.5rem; background: var(--bg-card); border-left: 3px solid var(--accent); }
   .post-lead b { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; font-weight: 600; }
   .post-lead p { font-family: var(--serif); font-size: 1.2rem; line-height: 1.5; }
@@ -89,6 +91,10 @@ const related = [...sameTag, ...others].slice(0, 3);
       <span>{readMin} мин чтения</span>
     </div>
   </div>
+
+  {post.data.image && (
+    <figure class="post-figure"><img src={post.data.image} alt={post.data.imageAlt ?? ''} width="1200" height="630" fetchpriority="high" /></figure>
+  )}
 
   <div class="post-lead"><b>Коротко</b><p>{post.data.excerpt}</p></div>
 

@@ -7,6 +7,8 @@ const posts = defineCollection({
     date: z.string(),
     tag: z.string(),
     excerpt: z.string(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
   }),
 });
 
