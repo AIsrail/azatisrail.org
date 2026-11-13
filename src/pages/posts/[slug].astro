@@ -24,11 +24,20 @@ const shareUrl = `https://azatisrail.org/posts/${post.slug}/`;
 const shareU = encodeURIComponent(shareUrl);
 const shareT = encodeURIComponent(post.data.title);
 const shareLinks = [
-  { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${shareU}`, track: 'share_facebook' },
-  { label: 'X', href: `https://twitter.com/intent/tweet?url=${shareU}&text=${shareT}`, track: 'share_x' },
-  { label: 'Telegram', href: `https://t.me/share/url?url=${shareU}&text=${shareT}`, track: 'share_telegram' },
-  { label: 'WhatsApp', href: `https://wa.me/?text=${shareT}%20${shareU}`, track: 'share_whatsapp' },
+  { label: 'Facebook', icon: 'facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${shareU}`, track: 'share_facebook' },
+  { label: 'X', icon: 'x', href: `https://twitter.com/intent/tweet?url=${shareU}&text=${shareT}`, track: 'share_x' },
+  { label: 'Telegram', icon: 'telegram', href: `https://t.me/share/url?url=${shareU}&text=${shareT}`, track: 'share_telegram' },
+  { label: 'WhatsApp', icon: 'whatsapp', href: `https://wa.me/?text=${shareT}%20${shareU}`, track: 'share_whatsapp' },
 ];
+const icons: Record<string, string> = {
+  facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.6V4.5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.3H7.6V14h2.7v8z" fill="currentColor"/></svg>',
+  x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z" fill="currentColor"/></svg>',
+  telegram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.5L18 20c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L7 13.3 2.5 11.9c-1-.3-1-1 .2-1.5L20 3.8c.8-.3 1.6.2 1.5.7z" fill="currentColor"/></svg>',
+  whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.4.2-.4c.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.5 2.4.9 2.4.6 2.8.6.4 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z" fill="currentColor"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg>',
+  discord: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 6c2-1 3-1 5-1s3 0 5 1c1 2 1.5 4 1.5 7 0 1-1 2-2 2.5L15 14c-1 .5-2 .5-3 .5S10 14.5 9 14l-.5 1c-1-.5-2-1.5-2-2.5 0-3 .5-5 1.5-7z"/><circle cx="9.5" cy="11" r="1" fill="currentColor"/><circle cx="14.5" cy="11" r="1" fill="currentColor"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
+};
 ---
 <Base title={post.data.title} description={post.data.excerpt} type="article" jsonLd={{ '@type': 'BlogPosting', headline: post.data.title, description: post.data.excerpt, datePublished: post.data.date, inLanguage: 'ru', url: `https://azatisrail.org/posts/${post.slug}/`, author: { '@id': 'https://azatisrail.org/#person' }, publisher: { '@id': 'https://azatisrail.org/#person' }, mainEntityOfPage: `https://azatisrail.org/posts/${post.slug}/`, image: `https://azatisrail.org/og-image.jpg` }}>
 <style>
@@ -67,8 +76,9 @@ const shareLinks = [
 
   .share { max-width: 720px; margin: 0 0 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
   .share-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.8rem; display: block; font-weight: 600; }
-  .share-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .share-list a, .share-list button { font: inherit; font-size: 0.85rem; color: var(--ink); background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.9rem; text-decoration: none; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+  .share-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .share-list a, .share-list button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; color: var(--ink); background: #fff; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+  .share-list svg { width: 20px; height: 20px; display: block; }
   .share-list a:hover, .share-list button:hover { border-color: var(--accent); color: var(--accent); }
   .share-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.7rem; }
   .next-step { max-width: 720px; margin: 0 0 3rem; padding: 1.75rem; background: #0F2A1E; color: #F1FAF4; }
@@ -127,10 +137,10 @@ const shareLinks = [
   <div class="share">
     <span class="share-title">Поделиться</span>
     <div class="share-list">
-      {shareLinks.map(s => <a href={s.href} target="_blank" rel="noopener" data-track={s.track}>{s.label}</a>)}
-      <button type="button" data-copy={shareUrl} data-track="share_copy_link">Instagram</button>
-      <button type="button" data-copy={shareUrl} data-track="share_copy_link">Discord</button>
-      <button type="button" data-copy={shareUrl} data-track="share_copy_link">Скопировать ссылку</button>
+      {shareLinks.map(s => <a href={s.href} target="_blank" rel="noopener" data-track={s.track} aria-label={s.label} title={s.label} set:html={icons[s.icon]} />)}
+      <button type="button" data-copy={shareUrl} data-track="share_copy_link" aria-label="Instagram: скопировать ссылку" title="Instagram: скопировать ссылку" set:html={icons.instagram} />
+      <button type="button" data-copy={shareUrl} data-track="share_copy_link" aria-label="Discord: скопировать ссылку" title="Discord: скопировать ссылку" set:html={icons.discord} />
+      <button type="button" data-copy={shareUrl} data-track="share_copy_link" aria-label="Скопировать ссылку" title="Скопировать ссылку" set:html={icons.copy} />
     </div>
     <p class="share-note">Instagram и Discord не открывают окно для отправки, поэтому нажмите кнопку — ссылка скопируется, и её можно вставить в пост или чат.</p>
   </div>
@@ -139,14 +149,14 @@ const shareLinks = [
     document.querySelectorAll('[data-copy]').forEach(btn => {
       btn.addEventListener('click', async () => {
         const url = btn.getAttribute('data-copy');
-        const original = btn.textContent;
+        const original = btn.innerHTML;
         try {
           await navigator.clipboard.writeText(url);
-          btn.textContent = 'Ссылка скопирована';
+          btn.textContent = 'OK';
         } catch (e) {
-          btn.textContent = url;
+          btn.textContent = '!';
         }
-        setTimeout(() => { btn.textContent = original; }, 2000);
+        setTimeout(() => { btn.innerHTML = original; }, 1500);
       });
     });
   </script>
